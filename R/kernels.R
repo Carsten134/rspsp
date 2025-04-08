@@ -5,8 +5,8 @@ tr_k <- function(u, h = 1) ifelse(u/h <= 1 & u / h >= -1, (35 / 32) * (1-(u/h)^2
 w_2d_bp <- function(omega_1, omega_2, N, M, hr = .5, hc = .5) {
   w <- (8*gamma(1))/(4*gamma(.5)^2*pi^2)
 
-  omega_N <- (fourier_freq(N) - omega_1)*(1/hr)
-  omega_M <- (fourier_freq(M) - omega_2)*(1/hc)
+  omega_N <- (omega_1 - fourier_freq(N))*(1/hr)
+  omega_M <- (omega_2 - fourier_freq(M))*(1/hc)
 
   # get ||theta||^2
   theta_2 <- omega_N^2 %*% t(rep(1, M))  + rep(1, N) %*% t(omega_M)^2

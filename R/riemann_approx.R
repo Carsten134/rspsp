@@ -1,6 +1,6 @@
 riemann_approx <- function(f, N = 100, M = 100) {
-  omega_M <- 2*pi*((-((M - 2) %/% 2)):(M %/% 2))/M
-  omega_N <- 2*pi*((-((N - 2) %/% 2)):(N %/% 2))/N
+  omega_M <- fourier_freq(M)
+  omega_N <- fourier_freq(N)
 
   sum <- 0
   for (i in 1:N) {
