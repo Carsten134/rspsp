@@ -20,6 +20,7 @@ plot.spectral_density <- function(f) {
         xlab = "",
         ylab = "",
         zlab = "",
+        zlim = c(0, max(vals$z)),
         ticktype = "detailed",
         main = "plot of True spectral density")
 }

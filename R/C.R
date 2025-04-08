@@ -26,5 +26,6 @@ C <- function(k,l, K) {
   first[1:n, 1:n] <- K
   second[(abs(k)+1):(n+abs(k)), (abs(l)+1):(n+abs(l))] <- K
 
-  return(sum(first * second))
+  # devide also by the variance, which is sum(K^2) under MA
+  return(sum(first * second)/sum(K^2))
 }
