@@ -1,0 +1,2 @@
+library(rspsp)
+library(testthat)
