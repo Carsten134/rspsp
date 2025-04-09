@@ -16,7 +16,7 @@ You can simulate a spatial MA process under $H_1$ and the method will detect, th
 
 Just like the Jentsch, Pauly 2015 the test statistic is named $\varphi_n^*$
 ```r
-# simulate under H1
+# simulate 20 x 20 MA grid under H1
 x <- gridMA(20, 20, MA_coef_col(.7))
 y <- gridMA(20, 20, MA_coef_row(.7))
 
