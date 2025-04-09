@@ -19,5 +19,5 @@ Tn_star <- function(x, y,...) {
   # manual Riemann integration
   f <- function(x, y) I_x_diff(x,y)^2 + I_y_diff(x,y)^2
 
-  return(riemann_approx(f, N, M))
+  return(riemann_approx(f, 25, 25))
 }

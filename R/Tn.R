@@ -11,5 +11,5 @@ Tn <- function(x, y, ...) {
   M <- ncol(I_x)
 
   f <- function(x, y) I_x_smooth(x, y)^2 + I_y_smooth(x, y)^2
-  return(riemann_approx(f, N, M))
+  return(riemann_approx(f, 25, 25))
 }
