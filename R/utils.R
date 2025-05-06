@@ -28,3 +28,9 @@ add_zero_padding <- function(A, padding_row, padding_col) {
          (padding_col + 1):(padding_col + ncol(A))] <- A
   return(result)
 }
+
+add_zero_padding_1d <- function(x, padding) {
+  result <- numeric(length(x) + 2* padding)
+  result[(padding + 1):(padding + length(x))] <- x
+  return(result)
+}
