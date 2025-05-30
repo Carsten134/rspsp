@@ -39,4 +39,14 @@ I_cross <- function(x, y){
       ((M%/% 2) + 2):M,
       1:(M %/% 2 + 1))]
   )
+#' @export
+I_1d <- function(x) {
+  N <- length(x)
+  res <- abs(fft(x))^2/(N * sqrt(var(x)))
+
+  return(res[
+    c(
+      ((N%/% 2) + 2):N,
+      1:((N %/% 2) + 1))
+    ])
 }

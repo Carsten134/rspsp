@@ -139,6 +139,45 @@ phi_n_star_iso <- function(x, B, alpha, h, q, print_result = T) {
   }
 
   decision <- as.numeric(T_val[B] > 1-alpha)
+phi_n_star_1d <- function(x, y, B, alpha, h, print_result = T) {
+  # first instantiate kernel, length and padding...
+  N <- length(x)
+  K <- k_1d_bp(N, h)
+  padding <- length(K) %/% 2
+
+  # Then compute the periodogramm (with padding)
+  I_x <- add_zero_padding_1d(I_1d(x), padding)
+  I_y <- add_zero_padding_1d(I_1d(y), padding)
+  I_tilde <- .5 * (I_x + I_y)
+
+  # next smooth the differences
+  I_x_smooth <- convolve(I_x - I_tilde, K, type = "f")
+  I_y_smooth <- convolve(I_y - I_tilde, K, type = "f")
+
+  # next compute the unconditional L2 Teststat (Riemann estimation)
+  Tn_val <- sum(I_x_smooth^2 + I_y_smooth^2) / N * 2 * pi
+
+  # Randomization
+  Tn_star_val <- numeric(B)
+  # tracks how quantile estimation evolves
+  T_val <- numeric(B)
+
+  for (i in 1:B) {
+    # permutate estimations
+    perm <- as.numeric(runif(N + 2* padding) > .5)
+    perm_n <- as.numeric(perm == 0)
+
+    I_x_rand <- I_x * perm + I_y * perm_n
+    I_y_rand <- I_x * perm_n + I_y * perm
+
+    I_x_smooth <- convolve(I_x_rand - I_tilde, K, type = "f")
+    I_y_smooth <- convolve(I_y_rand - I_tilde, K, type = "f")
+
+    Tn_star_val[i] <- sum(I_x_smooth^2 + I_y_smooth^2) / N * pi * 2
+    T_val[i] <- sum(Tn_star_val[1:i] < Tn_val)/i
+  }
+
+  decision <- as.numeric(T_val[B] > 1- alpha)
 
   if (print_result == T) {
     par(mfrow = c(1,2))

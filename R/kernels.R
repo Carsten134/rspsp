@@ -34,3 +34,12 @@ k_2d_bp <- function(N, M, hr = .5, hc = .5) {
 
   return(w*(1-theta_2/pi^2))
 }
+
+k_1d_bp <- function(N, h=.1) {
+  w <- .75 / (pi * h)
+
+  omega <- (fourier_freq(N)/h)^2
+  omega <- omega[omega < pi^2]
+
+  return(w * (1-omega/pi^2))
+}

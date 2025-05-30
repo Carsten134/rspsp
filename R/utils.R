@@ -88,3 +88,8 @@ eval_star <- function(f, q, N) {
   return(values)
 }
 
+add_zero_padding_1d <- function(x, padding) {
+  result <- numeric(length(x) + 2* padding)
+  result[(padding + 1):(padding + length(x))] <- x
+  return(result)
+}
