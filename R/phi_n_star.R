@@ -120,3 +120,56 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2, print_result = T){
   }
 }
 
+phi_n_star_iso <- function(x, B, alpha, h, q, print_result = T) {
+  # assume square x
+  N <- nrow(x)
+  # Computing Tn
+  I_x_diff <- demean_iso(I(x))
+  Tn_diff <- eval_star(I_smooth(I_x_diff, h,h), q, N)
+  Tn_val <- sum(Tn_diff^2) *(2*pi / N)
+
+  # Computing Tn_star
+  Tn_star_val <- numeric(B)
+  T_val <- numeric(B)
+  for (i in 1:B) {
+    I_x_diff_rand <- shuffle_circ(I_x_diff)
+    diffs <- eval_star(I_smooth(I_x_diff_rand, h, h), q, N)
+    Tn_star_val[i] <- sum(diffs^2) * (2*pi/N)
+    T_val[i] <- sum(Tn_star_val[1:i] < Tn_val)/ i
+  }
+
+  decision <- as.numeric(T_val[B] > 1-alpha)
+
+  if (print_result == T) {
+    par(mfrow = c(1,2))
+
+    hist(Tn_star_val, main = "Histogram of Tn*",
+         xlim = c(min(c(Tn_star_val, Tn_val)), max(c(Tn_star_val, Tn_val))),
+         breaks = 30)
+    abline(v = Tn_val, col = "red")
+    plot(T_val, main = "Trace of T over all randomizations",
+         xlab = "b",
+         ylab = "T",
+         ylim = c(0,1),
+         type = "l")
+    abline(h = 1-alpha, col = "red")
+
+    print("Test for equality of spatial ACF and spectral density")
+    print(paste("Randomized samples: ", B))
+    print(paste("Tn: ", Tn_val))
+    print(paste("Percentage of Tn > Tn*: ", T_val[B]*100, "%"))
+    if (decision) {
+      print("Decision: Rejecting H0")
+    } else {
+      print("Decision: Accepting H0")
+    }
+  } else {
+    result <- list(decision = as.numeric(decision),
+                   Tn = Tn_val,
+                   Tn_star = Tn_star_val,
+                   T_val = T_val)
+
+    return(result)
+  }
+}
+

@@ -23,3 +23,20 @@ I <- function(x){
       1:(M %/% 2 + 1))]
   )
 }
+
+I_cross <- function(x, y){
+  N <- nrow(x)
+  M <- ncol(x)
+  # apply the fft to both x and y
+  res <- abs(fft(x) * Conj(fft(y)))/(N * M * sqrt(var(as.vector(x)) * var(as.vector(y))))
+
+  # finally do the fft shift
+  return(res[
+    c(
+      ((N%/% 2) + 2):N,
+      1:((N %/% 2) + 1)),
+    c(
+      ((M%/% 2) + 2):M,
+      1:(M %/% 2 + 1))]
+  )
+}
