@@ -9,35 +9,15 @@ phi_n_star <- function(x, y, B, alpha, print_result = T, ...) {
   }
 
   decision <- T_val[B] > 1-alpha
+
+  result <- list(decision = as.numeric(decision),
+                 Tn = Tn_val,
+                 Tn_star = Tn_star_val,
+                 T_val = T_val)
+
   if (print_result == T) {
-    par(mfrow = c(1,2))
-
-    hist(Tn_star_val, main = "Histogram of Tn*",
-         xlim = c(min(c(Tn_star_val, Tn_val)), max(c(Tn_star_val, Tn_val))),
-         breaks = 30)
-    abline(v = Tn_val, col = "red")
-    plot(T_val, main = "Trace of T over all randomizations",
-         xlab = "b",
-         ylab = "T",
-         ylim = c(0,1),
-         type = "l")
-    abline(h = 1-alpha, col = "red")
-
-    print("Test for equality of spatial ACF and spectral density")
-    print(paste("Randomized samples: ", B))
-    print(paste("Tn: ", Tn_val))
-    print(paste("Percentage of Tn > Tn*: ", T_val[B]*100, "%"))
-    if (decision) {
-      print("Decision: Rejecting H0")
-    } else {
-      print("Decision: Accepting H0")
-    }
+    print.phi_n_star(result, alpha, B)
   } else {
-    result <- list(decision = as.numeric(decision),
-                   Tn = Tn_val,
-                   Tn_star = Tn_star_val,
-                   T_val = T_val)
-
     return(result)
   }
 }
@@ -87,35 +67,14 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2, print_result = T){
 
   decision <- as.numeric(T_val[B] > 1-alpha)
 
+  result <- list(decision = as.numeric(decision),
+                 Tn = Tn_val,
+                 Tn_star = Tn_star_val,
+                 T_val = T_val)
+
   if (print_result == T) {
-    par(mfrow = c(1,2))
-
-    hist(Tn_star_val, main = "Histogram of Tn*",
-         xlim = c(min(c(Tn_star_val, Tn_val)), max(c(Tn_star_val, Tn_val))),
-         breaks = 30)
-    abline(v = Tn_val, col = "red")
-    plot(T_val, main = "Trace of T over all randomizations",
-         xlab = "b",
-         ylab = "T",
-         ylim = c(0,1),
-         type = "l")
-    abline(h = 1-alpha, col = "red")
-
-    print("Test for equality of spatial ACF and spectral density")
-    print(paste("Randomized samples: ", B))
-    print(paste("Tn: ", Tn_val))
-    print(paste("Percentage of Tn > Tn*: ", T_val[B]*100, "%"))
-    if (decision) {
-      print("Decision: Rejecting H0")
-    } else {
-      print("Decision: Accepting H0")
-    }
+    print.phi_n_star(result, alpha, B)
   } else {
-    result <- list(decision = as.numeric(decision),
-                   Tn = Tn_val,
-                   Tn_star = Tn_star_val,
-                   T_val = T_val)
-
     return(result)
   }
 }
@@ -139,6 +98,20 @@ phi_n_star_iso <- function(x, B, alpha, h, q, print_result = T) {
   }
 
   decision <- as.numeric(T_val[B] > 1-alpha)
+
+  result <- list(decision = as.numeric(decision),
+                 Tn = Tn_val,
+                 Tn_star = Tn_star_val,
+                 T_val = T_val)
+
+  if(print_result==True) {
+    print.phi_n_star(result, alpha, B)
+  } else {
+    return(result)
+  }
+
+}
+
 phi_n_star_1d <- function(x, y, B, alpha, h, print_result = T) {
   # first instantiate kernel, length and padding...
   N <- length(x)
@@ -179,36 +152,46 @@ phi_n_star_1d <- function(x, y, B, alpha, h, print_result = T) {
 
   decision <- as.numeric(T_val[B] > 1- alpha)
 
+  result <- list(decision = as.numeric(decision),
+                 Tn = Tn_val,
+                 Tn_star = Tn_star_val,
+                 T_val = T_val)
+
   if (print_result == T) {
-    par(mfrow = c(1,2))
-
-    hist(Tn_star_val, main = "Histogram of Tn*",
-         xlim = c(min(c(Tn_star_val, Tn_val)), max(c(Tn_star_val, Tn_val))),
-         breaks = 30)
-    abline(v = Tn_val, col = "red")
-    plot(T_val, main = "Trace of T over all randomizations",
-         xlab = "b",
-         ylab = "T",
-         ylim = c(0,1),
-         type = "l")
-    abline(h = 1-alpha, col = "red")
-
-    print("Test for equality of spatial ACF and spectral density")
-    print(paste("Randomized samples: ", B))
-    print(paste("Tn: ", Tn_val))
-    print(paste("Percentage of Tn > Tn*: ", T_val[B]*100, "%"))
-    if (decision) {
-      print("Decision: Rejecting H0")
-    } else {
-      print("Decision: Accepting H0")
-    }
+    print.phi_n_star(result, alpha, B)
   } else {
-    result <- list(decision = as.numeric(decision),
-                   Tn = Tn_val,
-                   Tn_star = Tn_star_val,
-                   T_val = T_val)
-
     return(result)
   }
 }
+
+print.phi_n_star <- function(result, alpha, B) {
+  Tn_star_val <- result$Tn_star
+  decision <- result$decision
+  Tn_val <- result$Tn
+  T_val <- result$T_val
+
+  par(mfrow = c(1,2))
+
+  hist(Tn_star_val, main = "Histogram of Tn*",
+       xlim = c(min(c(Tn_star_val, Tn_val)), max(c(Tn_star_val, Tn_val))),
+       breaks = 30)
+  abline(v = Tn_val, col = "red")
+  plot(T_val, main = "Trace of T over all randomizations",
+       xlab = "b",
+       ylab = "T",
+       ylim = c(0,1),
+       type = "l")
+  abline(h = 1-alpha, col = "red")
+
+  print("Test for equality of spatial ACF and spectral density")
+  print(paste("Randomized samples: ", B))
+  print(paste("Tn: ", Tn_val))
+  print(paste("Percentage of Tn > Tn*: ", T_val[B]*100, "%"))
+  if (decision) {
+    print("Decision: Rejecting H0")
+  } else {
+    print("Decision: Accepting H0")
+  }
+}
+
 
