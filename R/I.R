@@ -39,6 +39,8 @@ I_cross <- function(x, y){
       ((M%/% 2) + 2):M,
       1:(M %/% 2 + 1))]
   )
+}
+
 #' @export
 I_1d <- function(x) {
   N <- length(x)
