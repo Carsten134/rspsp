@@ -164,6 +164,7 @@ phi_n_star_1d <- function(x, y, B, alpha, h, print_result = T) {
   }
 }
 
+#' @export
 print.phi_n_star <- function(result, alpha, B) {
   Tn_star_val <- result$Tn_star
   decision <- result$decision

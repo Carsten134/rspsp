@@ -14,6 +14,7 @@ f_true_MA <- function(K) {
   return(f)
 }
 
+#' @exportS3Method base::plot
 plot.spectral_density <- function(f) {
   vals = evaluate(f)
   persp(vals$x, vals$y, vals$z,
