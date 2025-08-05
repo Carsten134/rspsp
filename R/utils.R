@@ -93,3 +93,24 @@ add_zero_padding_1d <- function(x, padding) {
   result[(padding + 1):(padding + length(x))] <- x
   return(result)
 }
+
+# generates a random mask, that fulfills the symmetry property
+generate_random_mask <- function(N, M) {
+  N_zero <- (N - 1) %/% 2 + 1
+  M_zero <- (M - 1) %/% 2 + 1
+  # 3 1
+  # 4 2
+  perm <- matrix(as.numeric(runif(N *(M %/% 2)) > .5),
+                 ncol = M %/% 2,
+                 nrow = N)
+
+  mask <- matrix(0, nrow = N, ncol = M)
+  mask[(M_zero + 1):M, 1:N] <- perm
+
+  # 4 <- 1
+  mask[(N_zero + 1):(N - (N-1) %% 2), (M_zero - 1):1] <- mask[(N_zero - 1):1, (M_zero + 1):(M - (M-1) %% 2)]
+  # 3 <- 2
+  mask[(N_zero - 1):1, (M_zero - 1):1] <- mask[(N_zero + 1):(N - (N-1) %% 2), (M_zero + 1):(M - (M - 1) %% 2)]
+
+  mask
+}

@@ -49,8 +49,7 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2, print_result = T){
   T_val <- numeric(B)
   for (i in 1:B) {
     # generate permuation
-    perm <- matrix(as.numeric(runif((N + 2 * padding_N)*(M + 2 * padding_M)) > .5),
-                   nrow = N + 2 * padding_N)
+    perm <- generate_random_mask(N, M)
     perm_n <- matrix(as.numeric(perm != 1),
                      nrow = N + 2 * padding_N)
     I_x_rand <- I_x*perm + I_y*perm_n
