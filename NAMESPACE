@@ -3,3 +3,6 @@ exportPattern("^[[:alpha:]]+")
 importFrom("graphics", "persp")
 importFrom("stats", "fft", "rnorm")
 importFrom("EBImage", "filter2")
+
+S3method(print, testResult)
+S3method(plot, testResult)
