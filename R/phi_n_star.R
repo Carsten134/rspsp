@@ -29,18 +29,17 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2, print_result = T){
   M <- ncol(x)
 
   K_BP <- k_2d_bp(N, M, hr, hc)
-  padding_M <- ncol(K_BP) %/% 2
-  padding_N <- nrow(K_BP) %/% 2
 
-  # compute periodogramm (with padding)
-  I_x <- add_zero_padding(I(x), padding_N, padding_M)
-  I_y <- add_zero_padding(I(y), padding_N, padding_M)
+
+  # compute periodogramm
+  I_x = I(x)
+  I_y = I(y)
   I_tilde <- .5 * (I_x + I_y)
 
 
   # compute Tn
-  I_x_smooth <- ravetools::convolve_image(I_x - I_tilde, K_BP)
-  I_y_smooth <- ravetools::convolve_image(I_y - I_tilde, K_BP)
+  I_x_smooth <- EBImage::filter2(I_x - I_tilde, K_BP, "circular")
+  I_y_smooth <- EBImage::filter2(I_y - I_tilde, K_BP, "circular")
 
   # do Riemann sum over squared difference
   Tn_val <- sum(I_x_smooth^2 + I_y_smooth^2)*((2*pi)^2/(N*M))
@@ -51,13 +50,13 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2, print_result = T){
     # generate permuation
     perm <- generate_random_mask(N, M)
     perm_n <- matrix(as.numeric(perm != 1),
-                     nrow = N + 2 * padding_N)
+                     nrow = N)
     I_x_rand <- I_x*perm + I_y*perm_n
     I_y_rand <- I_x*perm_n + I_y*perm
 
     # capture difference
-    I_x_smooth <- ravetools::convolve_image(I_x_rand - I_tilde, K_BP)
-    I_y_smooth <- ravetools::convolve_image(I_y_rand - I_tilde, K_BP)
+    I_x_smooth <- EBImage::filter2(I_x_rand - I_tilde, K_BP, "circular")
+    I_y_smooth <- EBImage::filter2(I_y_rand - I_tilde, K_BP, "circular")
 
     # integrate difference
     Tn_star_val[i] <- sum(I_x_smooth^2 + I_y_smooth^2)*((2*pi)^2/(N*M))
@@ -78,21 +77,23 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2, print_result = T){
   }
 }
 
-phi_n_star_iso <- function(x, B, alpha, h, q, print_result = T) {
+phi_n_star_iso <- function(x, B, alpha, h, print_result = T) {
   # assume square x
   N <- nrow(x)
   # Computing Tn
-  I_x_diff <- demean_iso(I(x))
-  Tn_diff <- eval_star(I_smooth(I_x_diff, h,h), q, N)
-  Tn_val <- sum(Tn_diff^2) *(2*pi / N)
+  I_x_diff <- demean_iso_exact(I(x))
+  K_BP <- k_2d_bp(N, N, h, h)
+
+  Tn_diff <- EBImage::filter2(I_x_diff, K_BP, "circular")
+  Tn_val <- sum(Tn_diff^2) *((2*pi)^2 / N^2)
 
   # Computing Tn_star
   Tn_star_val <- numeric(B)
   T_val <- numeric(B)
   for (i in 1:B) {
-    I_x_diff_rand <- shuffle_circ(I_x_diff)
-    diffs <- eval_star(I_smooth(I_x_diff_rand, h, h), q, N)
-    Tn_star_val[i] <- sum(diffs^2) * (2*pi/N)
+    I_x_diff_rand <- shuffle_iso_exact(I_x_diff)
+    diffs <- EBImage::filter2(I_x_diff_rand, K_BP, "circular")
+    Tn_star_val[i] <- sum(diffs^2) * ((2*pi)^2 / N^2)
     T_val[i] <- sum(Tn_star_val[1:i] < Tn_val)/ i
   }
 
@@ -103,7 +104,7 @@ phi_n_star_iso <- function(x, B, alpha, h, q, print_result = T) {
                  Tn_star = Tn_star_val,
                  T_val = T_val)
 
-  if(print_result==True) {
+  if(print_result==TRUE) {
     print.phi_n_star(result, alpha, B)
   } else {
     return(result)

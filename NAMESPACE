@@ -2,4 +2,4 @@ exportPattern("^[[:alpha:]]+")
 
 importFrom("graphics", "persp")
 importFrom("stats", "fft", "rnorm")
-importFrom("ravetools", "convolve_image")
+importFrom("EBImage", "filter2")

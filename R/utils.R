@@ -34,7 +34,8 @@ fourier_dist <- function(N) {
   return(sqrt(o_N^2 %*% t(rep(1, N)) + rep(1, N) %*% t(o_N^2)))
 }
 
-shuffle_circ <- function(I_x) {
+#' @title Permutation in Anuli
+shuffle_iso_part <- function(I_x) {
   # assume I_x is quadratic
   N <- ncol(I_x)
   o_N <- fourier_freq(N)
@@ -53,7 +54,49 @@ shuffle_circ <- function(I_x) {
   return(I_x)
 }
 
-demean_iso <- function(I_x) {
+#' @title Demeaning with exact euclidean distance
+#' @export
+demean_iso_exact <- function(I_x) {
+  # assume I_x is quadratic
+  N <- ncol(I_x)
+  o_N <- fourier_freq(N)
+
+  # compute distance matrix
+  dist <- sqrt(o_N^2 %*% t(rep(1, N)) + rep(1, N) %*% t(o_N^2))
+
+  for (d in unique(as.vector(dist))) {
+    # get analus
+    an_r <- dist == d
+
+    # demean
+    I_x[an_r] <- I_x[an_r] - mean(I_x[an_r])
+  }
+  return(I_x)
+}
+
+#' @title Shuffeling with exact euclidean distance
+shuffle_iso_exact <- function(I_x) {
+  # assume I_x is quadratic
+  N <- ncol(I_x)
+  o_N <- fourier_freq(N)
+
+  # compute distance matrix
+  dist <- sqrt(o_N^2 %*% t(rep(1, N)) + rep(1, N) %*% t(o_N^2))
+
+  for (d in unique(as.vector(dist))) {
+    # get analus
+    an_r <- dist == d
+
+    # demean
+    to_shuffle <- I_x[an_r]
+    I_x[an_r] <- sample(to_shuffle, length(to_shuffle))
+  }
+  return(I_x)
+}
+
+
+#' @title Demeaning in Anuli
+demean_iso_part <- function(I_x) {
   # assume I_x is quadratic
   N <- ncol(I_x)
   o_N <- fourier_freq(N)
@@ -65,7 +108,7 @@ demean_iso <- function(I_x) {
     # get analus
     an_r <- dist <= o_N[i] & dist > o_N[i-1]
 
-    # shuffle
+    # demean
     I_x[an_r] <- I_x[an_r] - mean(I_x[an_r])
   }
   return(I_x)
