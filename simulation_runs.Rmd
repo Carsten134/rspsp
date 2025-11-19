@@ -79,8 +79,10 @@ band_null_ma_corr <- function(h) {
 
 mc_band_ma_corr <- future_mc(band_null_ma_corr,
                              param_list=param_list_null,
-                             repetitions=1)
+                             repetitions=MC_N)
 
+# save result
+write.csv(mc_band_ma_corr$output,file=r"{D:\Daten\DataScienceMaster\Semester 4\Masterarbeit\plotting_simulation_results\sim_results\size\with_symmetry\mc_band_ma_corr.csv}")
 ```
 
 
@@ -92,7 +94,7 @@ write.csv(mc_band_ma$output,file=r"{D:\Daten\DataScienceMaster\Semester 4\Master
 
 write.csv(mc_band_ma_row$output,file=r"{D:\Daten\DataScienceMaster\Semester 4\Masterarbeit\plotting_simulation_results\sim_results\mc_band_ma_row.csv}")
 
-write.csv(mc_band_ma_row$output,file=r"{D:\Daten\DataScienceMaster\Semester 4\Masterarbeit\plotting_simulation_results\sim_results\mc_band_ma_corr.csv}")
+
 ```
 
 ## Bandwidth on Decision: $\varphi_^{iso*}$
@@ -124,7 +126,7 @@ This is a testrun for powerestimations using `tidyMC`.
 
 ```{r blur-alternative}
 # Config for Alternative
-MC_N <- 1
+MC_N <- 100
 param_list_alt <- list(delta=1:7/10,
                    n=c(10, 15, 20, 25, 30))
 
@@ -137,7 +139,7 @@ blur_alt <- function(delta, n) {
   x <- gridMA(n, n, K0)
   y <- gridMA(n, n, K1)
   
-  res <- test.spectral(x, y, 200, .05)
+  res <- test.spectral(x, y, 200, .05, h1=.14, h2=.14)
   return(list(decision=res$decision))
 }
 
@@ -147,18 +149,41 @@ mc_blur_alt <- future_mc(blur_alt,
 # save result
 write.csv(mc_blur_alt$output,r"{D:\Daten\DataScienceMaster\Semester 4\Masterarbeit\plotting_simulation_results\sim_results\power\mc_blur_alt.csv}")
 ```
+```{r}
+row_col_alt <- function(delta, n) {
+  K0 <- MA_coef_row(.7)
+  K1 <- MA_coef_row(.7)
+  K1[1, 2] <- delta
+  K1[3, 2] <- delta
+  
+  x <- gridMA(n, n, K0)
+  y <- gridMA(n, n, K1)
+  
+  res <- test.spectral(x, y, 200, .05, h1=.14, h2=.14)
+  return(list(decision=res$decision))
+}
+
+mc_row_col_alt <- future_mc(row_col_alt,
+                            MC_N,
+                            param_list_alt)
+# save result
+write.csv(mc_row_col_alt$output,r"{D:\Daten\DataScienceMaster\Semester 4\Masterarbeit\plotting_simulation_results\sim_results\power\mc_row_col_alt.csv}")
+```
+
 
 ## Rotation Alternative
 ```{r}
+MC_N <- 100
+
 rot_alt <- function(delta, n) {
   x <- gridAR(n, n, .8, .05, .05)
   y <- gridAR(n, n, .8-delta, .05, .05 + delta)
   
-  res <- test.spectral(x, y, 200, .05)
+  res <- test.spectral(x, y, 200, .05, h1=.14, h2=.14)
   return(list(decision=res$decision))
 }
 
-mc_rot_alt <- future_mc(blur_alt,
+mc_rot_alt <- future_mc(rot_alt,
                      MC_N,
                      param_list=param_list_alt)
 
@@ -182,11 +207,11 @@ blur_alt_corr <- function(delta, n) {
   x <- sample$X1
   y <- sample$X2
   
-  res <- test.spectral(x, y, 200, .05)
+  res <- test.spectral(x, y, 200, .05, h1=.14, h2=.14)
   return(list(decision=res$decision))
 }
 
-mc_blur_cor_alt <- future_mc(blur_alt,
+mc_blur_cor_alt <- future_mc(blur_alt_corr,
                      MC_N,
                      param_list=param_list_alt)
 
