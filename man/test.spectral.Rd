@@ -10,8 +10,8 @@ test.spectral(
   B,
   alpha,
   hypothesis = "equality",
-  h1 = len(x)^(-0.2),
-  h2 = len(x)^(-0.2)
+  h1 = length(x)^(-0.2),
+  h2 = length(x)^(-0.2)
 )
 }
 \arguments{

@@ -6,7 +6,8 @@ phi_n_star <- function(x, y, B, alpha, hr=.1, hc=.2) {
   for (i in 1:B) {
     Tn_star_val[i] <- Tn_star(x, y, hr, hc)
   }
-  p_value <- sum(Tn_star_val <= Tn_val) / B
+  # accounting for machine error when comparing values
+  p_value <- sum(Tn_star_val < Tn_val - 1e-15) / B
   decision <- as.numeric(p_value > 1-alpha)
 
   result <- new_testResult(Tn_val,
@@ -47,6 +48,9 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2){
   for (i in 1:B) {
     # generate permuation
     perm <- generate_random_mask(N, M)
+    # non-symmetrical permutation for comparison
+    # perm <- matrix(as.numeric(runif(N*M) > .5),
+    #                nrow=N)
     perm_n <- matrix(as.numeric(perm != 1),
                      nrow = N)
     I_x_rand <- I_x*perm + I_y*perm_n
@@ -59,7 +63,8 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2){
     # integrate difference
     Tn_star_val[i] <- sum(I_x_smooth^2 + I_y_smooth^2)*((2*pi)^2/(N*M))
   }
-  p_value <- sum(Tn_star_val < Tn_val) / B
+  # accounting for machine error when comparing values
+  p_value <- sum(Tn_star_val < Tn_val - 1e-15) / B
   decision <- as.numeric(p_value > 1-alpha)
 
   result <- new_testResult(Tn_val,
@@ -91,7 +96,8 @@ phi_n_star_iso <- function(x, B, alpha, h1, h2) {
     diffs <- EBImage::filter2(I_x_diff_rand, K_BP, "circular")
     Tn_star_val[i] <- sum(diffs^2) * ((2*pi)^2 / N^2)
   }
-  p_value <- sum(Tn_star_val <= Tn_val) / B
+  # accounting for machine error when comparing values
+  p_value <- sum(Tn_star_val < Tn_val - 1e-13) / B
   decision <- as.numeric(p_value > 1-alpha)
 
   result <- new_testResult(Tn_val,
@@ -140,7 +146,8 @@ phi_n_star_1d <- function(x, y, B, alpha, h) {
 
     Tn_star_val[i] <- sum(I_x_smooth^2 + I_y_smooth^2) / N * pi * 2
   }
-  p_value <- sum(Tn_star_val <= Tn_val) / B
+  # accounting for machine error when comparing values
+  p_value <- sum(Tn_star_val < Tn_val - 1e-13 ) / B
   decision <- as.numeric(p_value > 1- alpha)
 
   result <- new_testResult(Tn_val,

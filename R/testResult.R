@@ -58,7 +58,9 @@ plot.testResult <- function(x, ...) {
   abline(v = quantile(Tn_star_val, 1-alpha), col="red")
 }
 
-
+#' @title summary generic for S3 testResult class
+#'
+#' @export
 summary.testResult <- function(x, ...) {
   cat("Resampling Test for", x$hypothesis, "Hypothesis. \n")
   cat("=========================================\n")
