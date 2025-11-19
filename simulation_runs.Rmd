@@ -1,0 +1,81 @@
+---
+title: "Simulations"
+author: "Carsten Stahl"
+date: "2025-11-18"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyMC)
+library(rspsp)
+```
+# H0
+
+## Bandwidth on Decision: $\varphi_n^*$
+We want to inspect how the bandwidth affects the decision of the test:
+
+```{r bandwidth-h0}
+band_null_ma <- function(n, h){
+  x <- gridMA(n, n, MA_coef_all(.7))
+  y <- gridMA(n, n, MA_coef_all(.7))
+  
+  res <- test.spectral(x, y, 200, .05, h1=h, h2=h)
+  return(list(decision=res$decision))
+}
+
+band_null_ar <- function(n, h){
+  
+}
+
+band_null_ma_corr <- function(n, h) {
+  
+}
+
+mc_band_ma <- future_mc(band_null_ma,
+                        param_list=list(n=c(15),
+                                        h=.01),
+                        repetitions=100)
+
+sum(mc_band_ma$output$decision == 0)
+```
+
+
+## Bandwidth on Decision: $\varphi_^{iso*}$
+Same again with isotropy.
+
+# H1: Approximating Power
+
+## Blur Alternative
+This is a testrun for powerestimations using `tidyMC`.
+
+```{r blur-alternative}
+blur_alt <- function(delta, n) {
+  K0 <- MA_coef_all(.7)
+  K1 <- MA_coef_all(delta, 7)
+  K1[3:5, 3:5] <- K0
+  
+  x <- gridMA(n, n, K0)
+  y <- gridMA(n, n, K1)
+  
+  res <- test.spectral(x, y, 200, .05)
+  return(list(decision=res$decision))
+}
+
+test_mc <- future_mc(blur_alt,
+                     1,
+                     param_list=list(delta=1:7/10,
+                                     n=c(10, 15, 20, 25, 30)))
+
+
+```
+
+## Rotation Alternative
+```{r}
+
+```
+
+## Correlation Alternative
+```{r}
+
+```

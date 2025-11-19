@@ -1,29 +1,28 @@
-phi_n_star <- function(x, y, B, alpha, print_result = T, ...) {
-  Tn_val <- Tn(x, y,...)
+phi_n_star <- function(x, y, B, alpha, hr=.1, hc=.2) {
+  Tn_val <- Tn(x, y, hr, hc)
 
   Tn_star_val <- numeric(B)
   T_val <- numeric(B)
   for (i in 1:B) {
-    Tn_star_val[i] <- Tn_star(x, y,...)
-    T_val[i] <- sum(Tn_star_val[1:i] < Tn_val)/i
+    Tn_star_val[i] <- Tn_star(x, y, hr, hc)
   }
+  p_value <- sum(Tn_star_val <= Tn_val) / B
+  decision <- as.numeric(p_value > 1-alpha)
 
-  decision <- T_val[B] > 1-alpha
+  result <- new_testResult(Tn_val,
+                           Tn_star_val,
+                           decision,
+                           p_value,
+                           "equality",
+                           B,
+                           alpha,
+                           hr, hc)
 
-  result <- list(decision = as.numeric(decision),
-                 Tn = Tn_val,
-                 Tn_star = Tn_star_val,
-                 T_val = T_val)
-
-  if (print_result == T) {
-    print.phi_n_star(result, alpha, B)
-  } else {
-    return(result)
-  }
+  result
 }
 
 
-phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2, print_result = T){
+phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2){
   # useful information
   N <- nrow(x)
   M <- ncol(x)
@@ -45,7 +44,6 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2, print_result = T){
   Tn_val <- sum(I_x_smooth^2 + I_y_smooth^2)*((2*pi)^2/(N*M))
 
   Tn_star_val <- numeric(B)
-  T_val <- numeric(B)
   for (i in 1:B) {
     # generate permuation
     perm <- generate_random_mask(N, M)
@@ -60,59 +58,54 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2, print_result = T){
 
     # integrate difference
     Tn_star_val[i] <- sum(I_x_smooth^2 + I_y_smooth^2)*((2*pi)^2/(N*M))
-    T_val[i] <- sum(Tn_star_val[1:i] < Tn_val)/i
   }
+  p_value <- sum(Tn_star_val < Tn_val) / B
+  decision <- as.numeric(p_value > 1-alpha)
 
-  decision <- as.numeric(T_val[B] > 1-alpha)
+  result <- new_testResult(Tn_val,
+                           Tn_star_val,
+                           decision,
+                           p_value,
+                           "equality",
+                           B,
+                           alpha,
+                           hr,hc)
 
-  result <- list(decision = as.numeric(decision),
-                 Tn = Tn_val,
-                 Tn_star = Tn_star_val,
-                 T_val = T_val)
-
-  if (print_result == T) {
-    print.phi_n_star(result, alpha, B)
-  } else {
-    return(result)
-  }
+  result
 }
 
-phi_n_star_iso <- function(x, B, alpha, h, print_result = T) {
+phi_n_star_iso <- function(x, B, alpha, h1, h2) {
   # assume square x
   N <- nrow(x)
   # Computing Tn
   I_x_diff <- demean_iso_exact(I(x))
-  K_BP <- k_2d_bp(N, N, h, h)
+  K_BP <- k_2d_bp(N, N, h1, h2)
 
   Tn_diff <- EBImage::filter2(I_x_diff, K_BP, "circular")
   Tn_val <- sum(Tn_diff^2) *((2*pi)^2 / N^2)
 
   # Computing Tn_star
   Tn_star_val <- numeric(B)
-  T_val <- numeric(B)
   for (i in 1:B) {
     I_x_diff_rand <- shuffle_iso_exact(I_x_diff)
     diffs <- EBImage::filter2(I_x_diff_rand, K_BP, "circular")
     Tn_star_val[i] <- sum(diffs^2) * ((2*pi)^2 / N^2)
-    T_val[i] <- sum(Tn_star_val[1:i] < Tn_val)/ i
   }
+  p_value <- sum(Tn_star_val <= Tn_val) / B
+  decision <- as.numeric(p_value > 1-alpha)
 
-  decision <- as.numeric(T_val[B] > 1-alpha)
-
-  result <- list(decision = as.numeric(decision),
-                 Tn = Tn_val,
-                 Tn_star = Tn_star_val,
-                 T_val = T_val)
-
-  if(print_result==TRUE) {
-    print.phi_n_star(result, alpha, B)
-  } else {
-    return(result)
-  }
-
+  result <- new_testResult(Tn_val,
+                           Tn_star_val,
+                           decision,
+                           p_value,
+                           "isotropy",
+                           B,
+                           alpha,
+                           h1,h2)
+  result
 }
 
-phi_n_star_1d <- function(x, y, B, alpha, h, print_result = T) {
+phi_n_star_1d <- function(x, y, B, alpha, h) {
   # first instantiate kernel, length and padding...
   N <- length(x)
   K <- k_1d_bp(N, h)
@@ -133,7 +126,6 @@ phi_n_star_1d <- function(x, y, B, alpha, h, print_result = T) {
   # Randomization
   Tn_star_val <- numeric(B)
   # tracks how quantile estimation evolves
-  T_val <- numeric(B)
 
   for (i in 1:B) {
     # permutate estimations
@@ -147,52 +139,20 @@ phi_n_star_1d <- function(x, y, B, alpha, h, print_result = T) {
     I_y_smooth <- convolve(I_y_rand - I_tilde, K, type = "f")
 
     Tn_star_val[i] <- sum(I_x_smooth^2 + I_y_smooth^2) / N * pi * 2
-    T_val[i] <- sum(Tn_star_val[1:i] < Tn_val)/i
   }
+  p_value <- sum(Tn_star_val <= Tn_val) / B
+  decision <- as.numeric(p_value > 1- alpha)
 
-  decision <- as.numeric(T_val[B] > 1- alpha)
-
-  result <- list(decision = as.numeric(decision),
-                 Tn = Tn_val,
-                 Tn_star = Tn_star_val,
-                 T_val = T_val)
-
-  if (print_result == T) {
-    print.phi_n_star(result, alpha, B)
-  } else {
-    return(result)
-  }
+  result <- new_testResult(Tn_val,
+                           Tn_star_val,
+                           decision,
+                           p_value,
+                           "equality",
+                           B,
+                           alpha,
+                           h, h)
+  result
 }
 
-#' @export
-print.phi_n_star <- function(result, alpha, B) {
-  Tn_star_val <- result$Tn_star
-  decision <- result$decision
-  Tn_val <- result$Tn
-  T_val <- result$T_val
-
-  par(mfrow = c(1,2))
-
-  hist(Tn_star_val, main = "Histogram of Tn*",
-       xlim = c(min(c(Tn_star_val, Tn_val)), max(c(Tn_star_val, Tn_val))),
-       breaks = 30)
-  abline(v = Tn_val, col = "red")
-  plot(T_val, main = "Trace of T over all randomizations",
-       xlab = "b",
-       ylab = "T",
-       ylim = c(0,1),
-       type = "l")
-  abline(h = 1-alpha, col = "red")
-
-  print("Test for equality of spatial ACF and spectral density")
-  print(paste("Randomized samples: ", B))
-  print(paste("Tn: ", Tn_val))
-  print(paste("Percentage of Tn > Tn*: ", T_val[B]*100, "%"))
-  if (decision) {
-    print("Decision: Rejecting H0")
-  } else {
-    print("Decision: Accepting H0")
-  }
-}
 
 

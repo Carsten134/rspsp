@@ -6,3 +6,4 @@ importFrom("EBImage", "filter2")
 
 S3method(print, testResult)
 S3method(plot, testResult)
+S3method(summary, testResult)

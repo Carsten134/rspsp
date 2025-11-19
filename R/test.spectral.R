@@ -1,17 +1,18 @@
 
 #' @export
 #'
-#' @title Jentsch Pauly Test
+#' @title Resampling Test for Spectral Densities
 #'
-#' @description Compute resampling test for equality of spectral densities or other qualities of the spectral densities.
+#' @description Compute resampling test for equality or isotropy of spectral densities or other qualities of the spectral densities.
 #' Can be applied to both vectors and matrices. For more information see DOI: 10.3150/13-BEJ584.
 #'
 #' @param x first sample. Can be numeric vector or matrix
 #' @param y second sample. Can be numeric vector or matrix (but must in it's type coincide with x). If isotropy is tested, this is disregarded.
 #' @param B Number of iterations for resampling (The more the better). Can be numeric but must be a whole number
-#' @param alpha Level of significance. Must be numeric value in (0,1]
-#' @param print_result Boolean whether to print the result or just return an object cotaining the result
+#' @param alpha Level of significance. Must be numeric value in (0,1)
 #' @param hypothesis Can be one of `"equality"` or `"isotropy"`
+#' @param h1 Kernelbandwidth along first axis defaults to \eqn{(NM)^{-1/5}}
+#' @param h2 Kernelbandwidth along second axis defaults to \eqn{(NM)^{-1/5}}
 #'
 #' @examples
 #' # simulating grid-data under H0
@@ -22,7 +23,7 @@
 #' # applying the test with 100 iterations and significance 5%
 #' JPtest(x, y, 100, .05)
 #'
-JPtest <- function(x, y, B, alpha, print_result = TRUE, hypothesis="equality") {
+test.spectral <- function(x, y, B, alpha, hypothesis="equality", h1=length(x)^(-.2), h2=length(x)^(-.2)) {
   # checking constraints for B and alpha
   if (! is.numeric(B)) {
     stop(paste("B should be numeric, instead got", typeof(B)))
@@ -49,16 +50,16 @@ JPtest <- function(x, y, B, alpha, print_result = TRUE, hypothesis="equality") {
 
   # vector case with equality
   if (is.vector(x) & is.vector(y) & hypothesis == "equality") {
-    phi_n_star_1d(x, y, B, alpha, print_result)
+    phi_n_star_1d(x, y, B, alpha, h1)
   }
 
   # matrix case with equality
   else if (is.matrix(x) & is.matrix(y) & hypothesis == "equality"){
-    phi_n_star_fast(x, y, B, alpha, print_result = print_result)
+    phi_n_star_fast(x, y, B, alpha, h1, h2)
   }
 
   # matrix case with isotropy
   else if (is.matrix(x) & hypothesis == "isotropy") {
-    phi_n_star_iso(x, B, alpha, .2, 3, print_result)
+    phi_n_star_iso(x, B, alpha, h1, h2)
   }
 }
