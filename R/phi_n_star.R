@@ -7,8 +7,8 @@ phi_n_star <- function(x, y, B, alpha, hr=.1, hc=.2) {
     Tn_star_val[i] <- Tn_star(x, y, hr, hc)
   }
   # accounting for machine error when comparing values
-  p_value <- sum(Tn_star_val < Tn_val - 1e-15) / B
-  decision <- as.numeric(p_value > 1-alpha)
+  p_value <- 1 - sum(Tn_star_val < Tn_val - 1e-15) / B
+  decision <- as.numeric(p_value < alpha)
 
   result <- new_testResult(Tn_val,
                            Tn_star_val,
@@ -64,8 +64,8 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2){
     Tn_star_val[i] <- sum(I_x_smooth^2 + I_y_smooth^2)*((2*pi)^2/(N*M))
   }
   # accounting for machine error when comparing values
-  p_value <- sum(Tn_star_val < Tn_val - 1e-15) / B
-  decision <- as.numeric(p_value > 1-alpha)
+  p_value <- 1 - sum(Tn_star_val < Tn_val - 1e-15) / B
+  decision <- as.numeric(p_value < alpha)
 
   result <- new_testResult(Tn_val,
                            Tn_star_val,
@@ -97,8 +97,8 @@ phi_n_star_iso <- function(x, B, alpha, h1, h2) {
     Tn_star_val[i] <- sum(diffs^2) * ((2*pi)^2 / N^2)
   }
   # accounting for machine error when comparing values
-  p_value <- sum(Tn_star_val < Tn_val - 1e-13) / B
-  decision <- as.numeric(p_value > 1-alpha)
+  p_value <- 1 - sum(Tn_star_val < Tn_val - 1e-15) / B
+  decision <- as.numeric(p_value < alpha)
 
   result <- new_testResult(Tn_val,
                            Tn_star_val,
@@ -147,8 +147,8 @@ phi_n_star_1d <- function(x, y, B, alpha, h) {
     Tn_star_val[i] <- sum(I_x_smooth^2 + I_y_smooth^2) / N * pi * 2
   }
   # accounting for machine error when comparing values
-  p_value <- sum(Tn_star_val < Tn_val - 1e-13 ) / B
-  decision <- as.numeric(p_value > 1- alpha)
+  p_value <- 1-sum(Tn_star_val < Tn_val - 1e-13 ) / B
+  decision <- as.numeric(p_value < alpha)
 
   result <- new_testResult(Tn_val,
                            Tn_star_val,

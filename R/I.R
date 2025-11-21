@@ -11,7 +11,7 @@ I <- function(x){
 
   # apply scaling ((2*pi)^2 is already in the fft)
   # also devide by variance to make it a spectral density
-  res <- (1/(N * M * var(as.vector(x))))*abs(fft(x))^2
+  res <- (1/(N * M))*abs(fft(x))^2
 
   # fft shift such that 0 is at the center and nyquist is at the borders
   return(res[
