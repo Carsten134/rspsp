@@ -58,11 +58,13 @@ shuffle_iso_part <- function(I_x) {
 #' @export
 demean_iso_exact <- function(I_x) {
   # assume I_x is quadratic
-  N <- ncol(I_x)
+  M <- ncol(I_x)
+  N <- nrow(I_x)
   o_N <- fourier_freq(N)
+  o_M <- fourier_freq(M)
 
   # compute distance matrix
-  dist <- sqrt(o_N^2 %*% t(rep(1, N)) + rep(1, N) %*% t(o_N^2))
+  dist <- sqrt(o_N^2 %*% t(rep(1, M)) + rep(1, N) %*% t(o_M^2))
 
   for (d in unique(as.vector(dist))) {
     # get analus
@@ -77,11 +79,13 @@ demean_iso_exact <- function(I_x) {
 #' @title Shuffeling with exact euclidean distance
 shuffle_iso_exact <- function(I_x) {
   # assume I_x is quadratic
-  N <- ncol(I_x)
+  M <- ncol(I_x)
+  N <- nrow(I_x)
   o_N <- fourier_freq(N)
+  o_M <- fourier_freq(M)
 
   # compute distance matrix
-  dist <- sqrt(o_N^2 %*% t(rep(1, N)) + rep(1, N) %*% t(o_N^2))
+  dist <- sqrt(o_N^2 %*% t(rep(1, M)) + rep(1, N) %*% t(o_M^2))
 
   for (d in unique(as.vector(dist))) {
     # get analus
@@ -137,23 +141,28 @@ add_zero_padding_1d <- function(x, padding) {
   return(result)
 }
 
-# generates a random mask, that fulfills the symmetry property
+# generates a random mask that fulfills the symmetry property
 generate_random_mask <- function(N, M) {
   N_zero <- (N - 1) %/% 2 + 1
   M_zero <- (M - 1) %/% 2 + 1
-  # 3 1
-  # 4 2
-  perm <- matrix(as.numeric(runif(N *(M %/% 2)) > .5),
-                 ncol = M %/% 2,
-                 nrow = N)
+
+  perm <- matrix(as.numeric(runif(N * (M %/% 2)) > 0.5),
+                 nrow = N, ncol = M %/% 2)
 
   mask <- matrix(0, nrow = N, ncol = M)
-  mask[(M_zero + 1):M, 1:N] <- perm
+
+  # write perm into all rows, right-half columns
+  if ((M_zero + 1) <= M && (M %/% 2) > 0) {
+    mask[1:N, (M_zero + 1):M] <- perm
+  }
 
   # 4 <- 1
-  mask[(N_zero + 1):(N - (N-1) %% 2), (M_zero - 1):1] <- mask[(N_zero - 1):1, (M_zero + 1):(M - (M-1) %% 2)]
+  mask[(N_zero + 1):(N - (N - 1) %% 2), (M_zero - 1):1] <-
+    mask[(N_zero - 1):1, (M_zero + 1):(M - (M - 1) %% 2)]
+
   # 3 <- 2
-  mask[(N_zero - 1):1, (M_zero - 1):1] <- mask[(N_zero + 1):(N - (N-1) %% 2), (M_zero + 1):(M - (M - 1) %% 2)]
+  mask[(N_zero - 1):1, (M_zero - 1):1] <-
+    mask[(N_zero + 1):(N - (N - 1) %% 2), (M_zero + 1):(M - (M - 1) %% 2)]
 
   mask
 }
