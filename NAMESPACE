@@ -7,3 +7,7 @@ importFrom("EBImage", "filter2")
 S3method(print, testResult)
 S3method(plot, testResult)
 S3method(summary, testResult)
+
+
+S3method(print, periodoTestResult)
+S3method(summary, periodoTestResult)
