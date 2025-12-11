@@ -166,3 +166,51 @@ generate_random_mask <- function(N, M) {
 
   mask
 }
+
+
+permute_periodogram <- function(arr) {
+  dims <- dim(arr)
+  N <- dims[1]
+  M <- dims[2]
+  q <- dims[3]
+  P <- N * M
+
+  get_sym_indices <- function(K) {
+    if (K %% 2 != 0) {
+      # Odd Case: Pure reversal (e.g., 1 2 3 4 5 -> 5 4 3 2 1)
+      return((K + 1) - (1:K))
+    } else {
+      # Even Case: Reverse K-1, keep K fixed (e.g., 1 2 3 4 -> 3 2 1 4)
+      idx <- K - (1:K)
+      idx[K] <- K # Fix the Nyquist frequency (last element)
+      return(idx)
+    }
+  }
+
+  rows_sym_map <- get_sym_indices(N)
+  cols_sym_map <- get_sym_indices(M)
+
+  r_vec <- rep(1:N, times = M)
+  c_vec <- rep(1:M, each = N)
+
+  r_sym <- rows_sym_map[r_vec]
+  c_sym <- cols_sym_map[c_vec]
+
+  # Convert symmetric (r, c) coordinates to linear indices
+  idx_original <- 1:P
+  idx_symmetric <- r_sym + (c_sym - 1) * N
+
+  idx_leader <- pmin(idx_original, idx_symmetric)
+
+  raw_perms <- t(replicate(P, sample.int(q)))
+
+  sym_perms <- raw_perms[idx_leader, ]
+
+  # Calculate final linear read offsets
+  fetch_indices <- idx_original + (sym_perms - 1) * P
+
+  # Extract and reshape
+  result <- array(arr[as.vector(fetch_indices)], dim = dims)
+
+  return(result)
+}

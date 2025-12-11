@@ -150,16 +150,88 @@ phi_n_star_1d <- function(x, y, B, alpha, h) {
   p_value <- 1-sum(Tn_star_val < Tn_val - 1e-13 ) / B
   decision <- as.numeric(p_value < alpha)
 
-  result <- new_testResult(Tn_val,
-                           Tn_star_val,
-                           decision,
-                           p_value,
-                           "equality",
-                           B,
-                           alpha,
-                           h, h)
-  result
+  new_testResult(Tn_val,
+                 Tn_star_val,
+                 decision,
+                 p_value,
+                 "equality",
+                 B,
+                 alpha,
+                 h, h)
 }
+
+
+#' @title \eqn{\varphi_n^*} for \eqn{p=1} and arbitray \eqn{q}.
+#'
+phi_n_star_mv <- function(X, B, alpha, h1=.14, h2=.14) {
+  dims <- dim(X)
+  stopifnot(length(dims) == 3)
+
+  N <- dims[1]; M <- dims[2]; q <- dims[3]
+
+  # computing periodograms and differences
+  I_X <- array(0, dim=dims)
+  for(i in 1:q) {
+    I_X[,,i] <- I(X[,,i])
+  }
+  I_tilde <- apply(X, c(1, 2), mean)
+
+  for (i in 1:q) {
+    I_X[,,i] <- I_X[,,i] - I_tilde
+  }
+
+
+  # computing Tn
+  Tn <- 0
+  Kh <- k_2d_bp(N, M, h1, h2)
+  s <- sqrt(h1 * h2)/(N * M)
+  for(i in 1:q) {
+    Tn <- Tn + sum(EBImage::filter2(I_X[,,i], Kh, "circular")^2)
+  }
+  Tn <- s * Tn
+
+  # computing Tn_star
+  Tn_star <- numeric(B)
+  for(j in 1:B) {
+    I_X_rand <- permute_periodogram(I_X)
+    current_Tn_star <- 0
+    for (i in 1:q) {
+      current_Tn_star <- current_Tn_star + sum(EBImage::filter2(I_X_rand[,,i], Kh, "circular")^2)
+    }
+    Tn_star[j] <- s * current_Tn_star
+  }
+  # accounting for machine error when comparing values
+  p_value <- 1 - sum(Tn_star < Tn - 1e-13 ) / B
+  decision <- as.numeric(p_value < alpha)
+
+  new_testResult(Tn,
+                 Tn_star,
+                 decision,
+                 p_value,
+                 "equality",
+                 B,
+                 alpha,
+                 h1, h2)
+}
+
+phi_n_stnry <- function(x, B, alpha, h1=.13, h2=.13) {
+  dims <- dim(x)
+  N <- dims[1]; M <- dims[2]
+
+  # devide into four equal segments
+  row_brd <- N %/% 2
+  col_brd <- M %/% 2
+  X <- array(0, dim=c(row_brd, col_brd, 4))
+  X[,,1] <- x[1:row_brd,1:col_brd]
+  X[,,2] <- x[(row_brd+1):(2*row_brd), 1:col_brd]
+  X[,,3] <- x[1:row_brd, (col_brd+1):(2*col_brd)]
+  X[,,4] <- x[(row_brd+1):(2*row_brd), (col_brd+1):(2*col_brd)]
+
+  # test for equality of spectral densities in each partition
+  phi_n_star_mv(X, B, alpha, h1, h2)
+}
+
+
 
 
 
