@@ -5,14 +5,21 @@
 #'
 #' @param N rows
 #' @param M columns of grid
+#' @param distribution Type of distribution must be one of "normal", "uniform", "cauchy", "chisq"
 #'
 #' @return matrix with N rows and M columns
-gridMA <- function(N, M, K, padding = nrow(K) %/% 2) {
+gridMA <- function(N, M, K, padding = nrow(K) %/% 2, distribution="normal") {
   N_tilde <- N + 2 * padding
   M_tilde <- M + 2 * padding
   n <- N_tilde * M_tilde
 
-  eps <- matrix(rnorm(n),
+  eps_val <- switch(distribution,
+                    normal=rnorm(n),
+                    uniform=runif(n),
+                    cauchy=rcauchy(n),
+                    chisq=rchisq(n, 3))
+
+  eps <- matrix(eps_val,
                 nrow = M_tilde,
                 ncol = N_tilde)
 
