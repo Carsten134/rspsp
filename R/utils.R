@@ -34,106 +34,51 @@ fourier_dist <- function(N) {
   return(sqrt(o_N^2 %*% t(rep(1, N)) + rep(1, N) %*% t(o_N^2)))
 }
 
-#' @title Permutation in Anuli
-shuffle_iso_part <- function(I_x) {
-  # assume I_x is quadratic
-  N <- ncol(I_x)
-  o_N <- fourier_freq(N)
+#' @title Pre-compute D4 Orbit Groups
+#' @description Maps every pixel to its D4 symmetry orbit
+get_d4_groups <- function(N, M) {
+  # Generate centered coordinate vectors
+  u_vec <- (1:N) - (floor(N / 2) + 1)
+  v_vec <- (1:M) - (floor(M / 2) + 1)
 
-  # compute distance matrix
-  dist <- sqrt(o_N^2 %*% t(rep(1, N)) + rep(1, N) %*% t(o_N^2))
+  U <- matrix(rep(u_vec, M), nrow = N, ncol = M)
+  V <- matrix(rep(v_vec, each = N), nrow = N, ncol = M)
 
-  for (i in (N %/% 2 + N %% 2 + 2):N) {
-    # get analus
-    an_r <- dist <= o_N[i] & dist > o_N[i-1]
+  # find canonical representatives
+  abs_u <- abs(U)
+  abs_v <- abs(V)
+  p1 <- pmax(abs_u, abs_v)
+  p2 <- pmin(abs_u, abs_v)
 
-    # shuffle
-    to_shuffle <- I_x[an_r]
-    I_x[an_r] <- sample(to_shuffle, length(to_shuffle))
-  }
-  return(I_x)
+  # generate ids
+  orbit_id <- p1 * (max(N, M) + 1) + p2
+
+  # Split linear indices into groups by Orbit ID
+  return(split(1:(N * M), orbit_id))
 }
 
-#' @title Demeaning with exact euclidean distance
-#' @export
-demean_iso_exact <- function(I_x) {
-  # assume I_x is quadratic
-  M <- ncol(I_x)
-  N <- nrow(I_x)
-  o_N <- fourier_freq(N)
-  o_M <- fourier_freq(M)
+#' @title Functional for precomputed D4 Orbit Groups
+#' @param spec_mat N x M matrix
+#' @param groups List of indices (orbits)
+#' @param fun A function that takes a vector and returns a vector of the same length
+#' @param ... Additional arguments passed to fun
+apply_grouped <- function(spec_mat, groups, fun, ...) {
+  # Apply function to values within each orbit
+  processed_list <- lapply(groups, function(idx) {
+    fun(spec_mat[idx], ...)
+  })
 
-  # compute distance matrix
-  dist <- sqrt(o_N^2 %*% t(rep(1, M)) + rep(1, N) %*% t(o_M^2))
+  # Flatten indices and values for vectorized assignment
+  target_indices <- unlist(groups, use.names = FALSE)
+  processed_values <- unlist(processed_list, use.names = FALSE)
 
-  for (d in unique(as.vector(dist))) {
-    # get analus
-    an_r <- dist == d
+  out_mat <- spec_mat
+  out_mat[target_indices] <- processed_values
 
-    # demean
-    I_x[an_r] <- I_x[an_r] - mean(I_x[an_r])
-  }
-  return(I_x)
-}
-
-#' @title Shuffeling with exact euclidean distance
-shuffle_iso_exact <- function(I_x) {
-  # assume I_x is quadratic
-  M <- ncol(I_x)
-  N <- nrow(I_x)
-  o_N <- fourier_freq(N)
-  o_M <- fourier_freq(M)
-
-  # compute distance matrix
-  dist <- sqrt(o_N^2 %*% t(rep(1, M)) + rep(1, N) %*% t(o_M^2))
-
-  for (d in unique(as.vector(dist))) {
-    # get analus
-    an_r <- dist == d
-
-    # demean
-    to_shuffle <- I_x[an_r]
-    I_x[an_r] <- sample(to_shuffle, length(to_shuffle))
-  }
-  return(I_x)
+  return(out_mat)
 }
 
 
-#' @title Demeaning in Anuli
-demean_iso_part <- function(I_x) {
-  # assume I_x is quadratic
-  N <- ncol(I_x)
-  o_N <- fourier_freq(N)
-
-  # compute distance matrix
-  dist <- sqrt(o_N^2 %*% t(rep(1, N)) + rep(1, N) %*% t(o_N^2))
-
-  for (i in (N %/% 2 + N %% 2 + 2):N) {
-    # get analus
-    an_r <- dist <= o_N[i] & dist > o_N[i-1]
-
-    # demean
-    I_x[an_r] <- I_x[an_r] - mean(I_x[an_r])
-  }
-  return(I_x)
-}
-
-eval_star <- function(f, q, N) {
-  thetas <- fourier_freq(q)
-
-  r <- fourier_freq(N)
-  r <- r[r > 0]
-  # evaluate along every line
-  values <- matrix(.0, length(r), q)
-  for (t in 1:length(thetas)) {
-    omega <- sqrt(r^2 / (1+tan(thetas[t])^2))
-    omega_tilde <- tan(thetas[t]) * omega
-    for (i in 1:length(r)) {
-      values[i, t] <- f(omega[i], omega_tilde[i])
-    }
-  }
-  return(values)
-}
 
 add_zero_padding_1d <- function(x, padding) {
   result <- numeric(length(x) + 2* padding)

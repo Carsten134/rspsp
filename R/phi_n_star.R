@@ -80,21 +80,27 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2){
 }
 
 phi_n_star_iso <- function(x, B, alpha, h1, h2) {
-  # assume square x
-  N <- nrow(x)
-  # Computing Tn
-  I_x_diff <- demean_iso_exact(I(x))
+  # get dims
+  dims <- dim(x)
+  N <- dims[1]; M <- dims[2]
+
+  # compute kernel weights and periodogram
   K_BP <- k_2d_bp(N, N, h1, h2)
+  I_x <- I(x)
+
+  # precompute groups and demean
+  orbit_groups <- get_d4_groups(N, M)
+  I_x_diff <- apply_grouped(I_x, orbit_groups, function(x) x - mean(x))
 
   Tn_diff <- EBImage::filter2(I_x_diff, K_BP, "circular")
-  Tn_val <- sum(Tn_diff^2) *((2*pi)^2 / N^2)
+  Tn_val <- sum(Tn_diff^2) *((2*pi)^2 / (N * M))
 
   # Computing Tn_star
   Tn_star_val <- numeric(B)
   for (i in 1:B) {
-    I_x_diff_rand <- shuffle_iso_exact(I_x_diff)
+    I_x_diff_rand <- apply_grouped(I_x_diff, orbit_groups, sample)
     diffs <- EBImage::filter2(I_x_diff_rand, K_BP, "circular")
-    Tn_star_val[i] <- sum(diffs^2) * ((2*pi)^2 / N^2)
+    Tn_star_val[i] <- sum(diffs^2) * ((2*pi)^2 / (N * M))
   }
   # accounting for machine error when comparing values
   p_value <- 1 - sum(Tn_star_val < Tn_val - 1e-15) / B
