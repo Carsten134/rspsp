@@ -10,6 +10,10 @@ Encoding: UTF-8
 LazyData: true
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
+
 RoxygenNote: 7.3.3
-Imports: ravetools
+Imports: 
+  ravetools,
+  EBImage,
+  stats
 URL: https://carsten134.github.io/rspsp/
