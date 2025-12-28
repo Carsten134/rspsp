@@ -18,16 +18,6 @@ periodogram_unshifted <- function(x) {
 #'
 pt3 <- function(x, y, alpha) {
   # assume both lattices are equally sized
-  # N <- nrow(x)
-  # M <- ncol(x)
-  #
-  # I_x <- I(x)[1:((N-1) %/% 2),1:((M-1) %/% 2)]
-  # I_y <- I(y)[1:((N-1) %/% 2),1:((M-1) %/% 2)]
-  #
-  # n <- length(as.vector(I_x))
-  # pt3_val <- sqrt(12 * n) * (mean(abs((I_x - I_y)/(I_x + I_y))) - .5)
-  # p_val <- 1 - pnorm(pt3_val)
-  # decision <- as.numeric(p_val < alpha)
   N <- nrow(x)
   M <- ncol(x)
 
@@ -35,20 +25,19 @@ pt3 <- function(x, y, alpha) {
   I_xu <- periodogram_unshifted(x)
   I_yu <- periodogram_unshifted(y)
 
-  # 2. Define Frequency Limits (Strict interior first quadrant)
-  # Matches Python: (n-1) // 2
+  # 2. Define Frequency Limits (Strict interior first and third quadrant)
   max_freq_N <- floor((N - 1) / 2)
   max_freq_M <- floor((M - 1) / 2)
 
-  # 3. Extract Frequencies
-  # Python starts at index 1 (skipping 0).
-  # R starts at index 1 (DC). So we must use index 2 to skip DC.
-  # Python range is inclusive of max, so we go up to max_freq + 1 in R indices.
+  # 3. Extract Frequencies.
   rows <- 2:(max_freq_N + 1)
   cols <- 2:(max_freq_M + 1)
+  if (M > 3) {
+    cols <- c(cols, (max_freq_M + 3):M)
+  }
 
-  I_x <- I_xu[rows,]
-  I_y <- I_yu[rows,]
+  I_x <- I_xu[rows, cols]
+  I_y <- I_yu[rows, cols]
 
   # 4. Calculate Ratio
   # Add small epsilon to avoid division by zero if necessary, though unlikely in float
@@ -56,7 +45,6 @@ pt3 <- function(x, y, alpha) {
   ratio <- abs((I_x - I_y) / (I_x + I_y + eps))
 
   # 5. Calculate Statistic
-  # CRITICAL FIX: Use the number of elements in the subset, not total pixels
   n_star <- length(ratio)
 
   # Statistic: sqrt(12 * n_star) * (mean - 0.5)

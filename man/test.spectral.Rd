@@ -23,7 +23,7 @@ test.spectral(
 
 \item{alpha}{Level of significance. Must be numeric value in (0,1)}
 
-\item{hypothesis}{Can be one of `"equality"` or `"isotropy"`}
+\item{hypothesis}{Can be one of `"equality", "isotropy", "stationary`}
 
 \item{h1}{Kernelbandwidth along first axis defaults to \eqn{(NM)^{-1/5}}}
 

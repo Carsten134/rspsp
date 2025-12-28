@@ -10,7 +10,7 @@
 #' @param y second sample. Can be numeric vector or matrix (but must in it's type coincide with x). If isotropy is tested, this is disregarded.
 #' @param B Number of iterations for resampling (The more the better). Can be numeric but must be a whole number
 #' @param alpha Level of significance. Must be numeric value in (0,1)
-#' @param hypothesis Can be one of `"equality"` or `"isotropy"`
+#' @param hypothesis Can be one of `"equality", "isotropy", "stationary`
 #' @param h1 Kernelbandwidth along first axis defaults to \eqn{(NM)^{-1/5}}
 #' @param h2 Kernelbandwidth along second axis defaults to \eqn{(NM)^{-1/5}}
 #'
@@ -62,4 +62,9 @@ test.spectral <- function(x, y, B, alpha, hypothesis="equality", h1=length(x)^(-
   else if (is.matrix(x) & hypothesis == "isotropy") {
     phi_n_star_iso(x, B, alpha, h1, h2)
   }
+  # matrix case with isotropy
+  else if (is.matrix(x) & hypothesis == "stationary") {
+    phi_n_stnry(x, B, alpha, h1, h2)
+  }
+
 }
