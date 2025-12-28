@@ -2,8 +2,10 @@ url: https://carsten134.github.io/rspsp/
 template:
   bootstrap: 5
   light-switch: true
-  bslib:
-    bootswatch: morph
-    pkgdown-nav-height: 90px
+  bsl:
+    bootswatch: darkly
+    bg: "#ffffff"
+    fg: "#000000"
+    primary: "#d17702"
   math-rendering: katex
 
