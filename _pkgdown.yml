@@ -1,4 +1,9 @@
 url: https://carsten134.github.io/rspsp/
 template:
   bootstrap: 5
+  light-switch: true
+  bslib:
+    bootswatch: morph
+    pkgdown-nav-height: 90px
+  math-rendering: katex
 
