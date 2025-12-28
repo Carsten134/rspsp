@@ -18,11 +18,11 @@ devtools::install_github("https://github.com/Carsten134/rspsp")
 
 ### Usage
 
-You can simulate a spatial MA process under $H_{1}$ and the method will
+You can simulate a spatial MA process under H_1 and the method will
 detect, that the spatial dependencies are different.
 
 Just like the Jentsch, Pauly 2015 the test statistic is named
-$\varphi_{n}^{*}$
+\varphi_n^\*
 
 ``` r
 # simulate 20 x 20 MA grid under H1
