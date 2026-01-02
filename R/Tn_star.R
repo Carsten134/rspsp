@@ -8,7 +8,7 @@ Tn_star <- function(x, y,...) {
   N <- nrow(I_x)
   M <- ncol(I_x)
 
-  perm <- matrix(as.numeric(runif(N*M) > .5), nrow = N)
+  perm <- matrix(as.numeric(stats::runif(N*M) > .5), nrow = N)
   perm_n <- matrix(as.numeric(perm != 1), nrow = N)
   I_x_rand <- I_x*perm + I_y*perm_n
   I_y_rand <- I_x*perm_n + I_y*perm

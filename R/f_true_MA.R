@@ -15,13 +15,14 @@ f_true_MA <- function(K) {
 }
 
 #' @exportS3Method base::plot
-plot.spectral_density <- function(f) {
+plot.spectral_density <- function(x, ...) {
+  f <- x
   vals = evaluate(f)
-  persp(vals$x, vals$y, vals$z,
-        xlab = "",
-        ylab = "",
-        zlab = "",
-        zlim = c(0, max(vals$z)),
-        ticktype = "detailed",
-        main = "plot of True spectral density")
+  graphics::persp(vals$x, vals$y, vals$z,
+                  xlab = "",
+                  ylab = "",
+                  zlab = "",
+                  zlim = c(0, max(vals$z)),
+                  ticktype = "detailed",
+                  main = "plot of True spectral density")
 }

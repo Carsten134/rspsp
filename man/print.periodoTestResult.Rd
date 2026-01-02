@@ -6,6 +6,11 @@
 \usage{
 \method{print}{periodoTestResult}(x, ...)
 }
+\arguments{
+\item{x}{periodoTestResult object}
+
+\item{...}{additional arguments (might become relevant later)}
+}
 \description{
 summary generic for S3 testResult class
 }

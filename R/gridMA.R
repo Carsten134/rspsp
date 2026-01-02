@@ -5,19 +5,23 @@
 #'
 #' @param N rows
 #' @param M columns of grid
+#' @param K numeric matrix of kernel weights
 #' @param distribution Type of distribution must be one of "normal", "uniform", "cauchy", "chisq"
 #'
 #' @return matrix with N rows and M columns
-gridMA <- function(N, M, K, padding = nrow(K) %/% 2, distribution="normal") {
+gridMA <- function(N, M, K, distribution="normal") {
+  padding <- nrow(K) %/% 2
+
   N_tilde <- N + 2 * padding
   M_tilde <- M + 2 * padding
+
   n <- N_tilde * M_tilde
 
   eps_val <- switch(distribution,
-                    normal=rnorm(n),
-                    uniform=runif(n),
-                    cauchy=rcauchy(n),
-                    chisq=rchisq(n, 3))
+                    normal=stats::rnorm(n),
+                    uniform=stats::runif(n),
+                    cauchy=stats::rcauchy(n),
+                    chisq=stats::rchisq(n, 3))
 
   eps <- matrix(eps_val,
                 nrow = M_tilde,

@@ -6,6 +6,17 @@
 \usage{
 new_periodoTestResult(test_value, p_value, decision, alpha, hypothesis)
 }
+\arguments{
+\item{test_value}{float value representing the value of \eqn{PT_3}}
+
+\item{p_value}{float for \eqn{p} value}
+
+\item{decision}{binary numeric (0, 1) value for acceptance (0) or rejection (1)}
+
+\item{alpha}{float between 0 and 1 for significance level}
+
+\item{hypothesis}{type of hypothesis}
+}
 \description{
 Constructor for periodoTestResult object
 }

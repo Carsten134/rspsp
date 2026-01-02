@@ -6,6 +6,12 @@
 \usage{
 \method{plot}{testResult}(x, ...)
 }
+\arguments{
+\item{x}{testResult object}
+
+\item{...}{additional parameters for printing (might become relevant in future versions)}
+}
 \description{
-Print generic for testResult S3 class
+Plots a histogram of \eqn{T_n^*} with \eqn{T_n} marked as a blue vertical line
+and \eqn{c_\alpha(T_n^*)} (the critical value) marked as a red vertical line
 }

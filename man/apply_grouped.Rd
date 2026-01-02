@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{apply_grouped}
 \alias{apply_grouped}
-\title{Functional for precomputed D4 Orbit Groups}
+\title{Functional for Precomputed D4 Orbit Groups}
 \usage{
 apply_grouped(spec_mat, groups, fun, ...)
 }
@@ -16,5 +16,5 @@ apply_grouped(spec_mat, groups, fun, ...)
 \item{...}{Additional arguments passed to fun}
 }
 \description{
-Functional for precomputed D4 Orbit Groups
+Functional for Precomputed D4 Orbit Groups
 }

@@ -4,10 +4,12 @@
 \alias{plot.I_smooth}
 \title{Plot an smoothed periodogramm}
 \usage{
-\method{plot}{I_smooth}(I_s, ...)
+\method{plot}{I_smooth}(x, ...)
 }
 \arguments{
-\item{I_s}{I_smooth function}
+\item{x}{I_smooth function}
+
+\item{...}{additional arguments might become relevant in later versions}
 }
 \description{
 This function plots a smoothed periodogramm.

@@ -6,6 +6,11 @@
 \usage{
 \method{print}{testResult}(x, ...)
 }
+\arguments{
+\item{x}{testResult object}
+
+\item{...}{additional parameters for printing (might become relevant in future versions)}
+}
 \description{
 Print generic for testResult S3 class
 }

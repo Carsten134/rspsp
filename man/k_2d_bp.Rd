@@ -6,6 +6,16 @@
 \usage{
 k_2d_bp(N, M, hr = 0.5, hc = 0.5)
 }
+\arguments{
+\item{N}{positive integer for number of rows of lattice}
+
+\item{M}{positive integer for number of cols of lattice}
+
+\item{hr}{positive float for bandwidth along row axis}
+
+\item{hc}{positive float for bandwidht along column axis}
+}
 \description{
 Used in the fast version of phi_n_star to construct a kernel for the convolution
 }
+\keyword{internal}

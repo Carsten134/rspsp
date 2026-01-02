@@ -6,6 +6,17 @@
 \usage{
 phi_n_star_mv(X, B, alpha, h1 = 0.14, h2 = 0.14)
 }
+\arguments{
+\item{X}{numeric array of dims (N, M, q)}
+
+\item{B}{numeric value for the amount of randomization iterations}
+
+\item{alpha}{significance level, has to be numeric value in \eqn{(0,1]}}
+
+\item{h1}{numeric positive value for kernel bandwidth along column axis}
+
+\item{h2}{numeric positive value for kernel bandwidth along row axis}
+}
 \description{
 \eqn{\varphi_n^*} for \eqn{p=1} and arbitray \eqn{q}.
 }

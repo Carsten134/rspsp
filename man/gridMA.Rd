@@ -4,12 +4,14 @@
 \alias{gridMA}
 \title{simulating spatial MA process}
 \usage{
-gridMA(N, M, K, padding = nrow(K)\%/\%2, distribution = "normal")
+gridMA(N, M, K, distribution = "normal")
 }
 \arguments{
 \item{N}{rows}
 
 \item{M}{columns of grid}
+
+\item{K}{numeric matrix of kernel weights}
 
 \item{distribution}{Type of distribution must be one of "normal", "uniform", "cauchy", "chisq"}
 }

@@ -3,9 +3,9 @@
 #' @description Computes smoothed Periodogram
 #'
 #' @param I periodogram results
-#' @param kernel kernel used to smooth
 #' @param hr rowwise bandwidth
 #' @param hc columnwise bandwidth
+#'
 I_smooth <- function(I,hr = .2, hc = .2) {
   N <- nrow(I)
   M <- ncol(I)
@@ -20,33 +20,34 @@ I_smooth <- function(I,hr = .2, hc = .2) {
   class(I_s) <- c("I_smooth", "grid_function")
   I_s
 }
-# I_smooth <- function(I, kernel = tr_k, hr = .5, hc = .5) {
-#   N <- nrow(I)
-#   M <- ncol(I)
-#
-#   omega_M <- 2*pi*((-((M - 2) %/% 2)):(M %/% 2))/M
-#   omega_N <- 2*pi*((-((N - 2) %/% 2)):(N %/% 2))/N
-#   I_s <- function (omega_1, omega_2) {
-#     K_N <- kernel(omega_N - omega_1, hc)
-#     K_M <- kernel(omega_M - omega_2, hr)
-#
-#     weights <- K_N %*% t(K_M)
-#     weighted <- sum(weights * I)
-#
-#     normalized <- (1/(N*M*hr*hc))*weighted
-#     return(normalized)
-#   }
-#   class(I_s) <- c("I_smooth", "grid_function")
-#   I_s
-# }
 
+#' @title evaluate generic
+#'
+#' @description
+#' Evaluates functions on a grid
+#'
+#' @param f function
+#' @param N integer for rows of output matrix
+#' @param M integer for cols of output matrix
+#'
 #' @export
-evaluate <- function(f) {
+evaluate <- function(f, N, M) {
   UseMethod("evaluate")
 }
 
-#' @export
-evaluate.grid_function <- function(I_s, N = 30, M = 30) {
+
+#' @title evaluate a grid function object
+#'
+#' @description
+#' Evaluates a function on \eqn{[-\pi, \pi]^2}
+#'
+#'
+#' @param f the grid_function object
+#' @param N integer for number of rows to generate
+#' @param M integer for number of columns to generate
+#'
+#'
+evaluate.grid_function <- function(f, N = 30, M = 30) {
   x <- seq(-pi+1e-5, pi-1e-5, length.out = N)
   y <- seq(-pi+1e-5, pi-1e-5, length.out = M)
 
@@ -54,7 +55,7 @@ evaluate.grid_function <- function(I_s, N = 30, M = 30) {
   z <- matrix(0, N, M)
   for (i in 1:length(x)) {
     for (j in 1:length(y)) {
-      z[i, j] <- I_s(x[i], y[j])
+      z[i, j] <- f(x[i], y[j])
     }
   }
   return(list(x = x, y = y, z = z))
@@ -65,19 +66,21 @@ evaluate.grid_function <- function(I_s, N = 30, M = 30) {
 #' @description
 #' This function plots a smoothed periodogramm.
 #'
-#' @param I_s I_smooth function
+#' @param x I_smooth function
+#' @param ... additional arguments might become relevant in later versions
 #'
 #' @export
 #'
-plot.I_smooth <- function(I_s, ...) {
+plot.I_smooth <- function(x, ...) {
+  I_s <- x
   vals = evaluate(I_s)
-  persp(vals$x,
-        vals$y,
-        vals$z,
-        ticktype = "detailed",
-        zlab = "",
-        xlab = "",
-        ylab = "",
-        main = "plot of smoothed Periodogram")
+  graphics::persp(vals$x,
+                  vals$y,
+                  vals$z,
+                  ticktype = "detailed",
+                  zlab = "",
+                  xlab = "",
+                  ylab = "",
+                  main = "plot of smoothed Periodogram")
 }
 

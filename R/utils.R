@@ -1,5 +1,11 @@
 fourier_freq <- function(N) 2*pi*((-((N - 1) %/% 2)):(N %/% 2))/N
 
+#' @title Generate Coefficient Matrix for MA Process
+#'
+#' @param value value to be added in column
+#' @param size size of the matrix
+#'
+#' @export
 MA_coef_col <- function(value, size = 3) {
   K <- matrix(0, size, size)
   K[, (size %/% 2 + 1)] <- value
@@ -7,6 +13,13 @@ MA_coef_col <- function(value, size = 3) {
   return(K)
 }
 
+
+#' @title Generate Coefficient Matrix for MA Process
+#'
+#' @param value value to be added in row
+#' @param size size of the matrix
+#'
+#' @export
 MA_coef_row <- function(value, size = 3) {
   K <- matrix(0, size, size)
   K[(size %/% 2 + 1), ] <- value
@@ -14,6 +27,13 @@ MA_coef_row <- function(value, size = 3) {
   return(K)
 }
 
+
+#' @title Generate Coefficient Matrix for MA Process
+#'
+#' @param value value to be added surounding
+#' @param size size of the matrix
+#'
+#' @export
 MA_coef_all <- function(value, size = 3) {
   K <- matrix(value, size, size)
   K[(size %/% 2 + 1), (size %/% 2 + 1)] <- 1
@@ -36,6 +56,8 @@ fourier_dist <- function(N) {
 
 #' @title Pre-compute D4 Orbit Groups
 #' @description Maps every pixel to its D4 symmetry orbit
+#'
+#' @noRd
 get_d4_groups <- function(N, M) {
   # Generate centered coordinate vectors
   u_vec <- (1:N) - (floor(N / 2) + 1)
@@ -57,11 +79,14 @@ get_d4_groups <- function(N, M) {
   return(split(1:(N * M), orbit_id))
 }
 
-#' @title Functional for precomputed D4 Orbit Groups
+#' @title Functional for Precomputed D4 Orbit Groups
+#'
 #' @param spec_mat N x M matrix
 #' @param groups List of indices (orbits)
 #' @param fun A function that takes a vector and returns a vector of the same length
 #' @param ... Additional arguments passed to fun
+#'
+#'
 apply_grouped <- function(spec_mat, groups, fun, ...) {
   # Apply function to values within each orbit
   processed_list <- lapply(groups, function(idx) {
@@ -91,7 +116,7 @@ generate_random_mask <- function(N, M) {
   N_zero <- (N - 1) %/% 2 + 1
   M_zero <- (M - 1) %/% 2 + 1
 
-  perm <- matrix(as.numeric(runif(N * (M %/% 2)) > 0.5),
+  perm <- matrix(as.numeric(stats::runif(N * (M %/% 2)) > 0.5),
                  nrow = N, ncol = M %/% 2)
 
   mask <- matrix(0, nrow = N, ncol = M)

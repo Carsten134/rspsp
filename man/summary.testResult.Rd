@@ -4,7 +4,12 @@
 \alias{summary.testResult}
 \title{summary generic for S3 testResult class}
 \usage{
-\method{summary}{testResult}(x, ...)
+\method{summary}{testResult}(object, ...)
+}
+\arguments{
+\item{object}{testResult object}
+
+\item{...}{additional parameters for printing (might become relevant in future versions)}
 }
 \description{
 summary generic for S3 testResult class

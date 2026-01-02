@@ -85,7 +85,7 @@ phi_n_star_iso <- function(x, B, alpha, h1, h2) {
   N <- dims[1]; M <- dims[2]
 
   # compute kernel weights and periodogram
-  K_BP <- k_2d_bp(N, N, h1, h2)
+  K_BP <- k_2d_bp(N, M, h1, h2)
   I_x <- I(x)
 
   # precompute groups and demean
@@ -129,8 +129,8 @@ phi_n_star_1d <- function(x, y, B, alpha, h) {
   I_tilde <- .5 * (I_x + I_y)
 
   # next smooth the differences
-  I_x_smooth <- convolve(I_x - I_tilde, K, type = "f")
-  I_y_smooth <- convolve(I_y - I_tilde, K, type = "f")
+  I_x_smooth <- stats::convolve(I_x - I_tilde, K, type = "f")
+  I_y_smooth <- stats::convolve(I_y - I_tilde, K, type = "f")
 
   # next compute the unconditional L2 Teststat (Riemann estimation)
   Tn_val <- sum(I_x_smooth^2 + I_y_smooth^2) / N * 2 * pi
@@ -141,14 +141,14 @@ phi_n_star_1d <- function(x, y, B, alpha, h) {
 
   for (i in 1:B) {
     # permutate estimations
-    perm <- as.numeric(runif(N + 2* padding) > .5)
+    perm <- as.numeric(stats::runif(N + 2* padding) > .5)
     perm_n <- as.numeric(perm == 0)
 
     I_x_rand <- I_x * perm + I_y * perm_n
     I_y_rand <- I_x * perm_n + I_y * perm
 
-    I_x_smooth <- convolve(I_x_rand - I_tilde, K, type = "f")
-    I_y_smooth <- convolve(I_y_rand - I_tilde, K, type = "f")
+    I_x_smooth <- stats::convolve(I_x_rand - I_tilde, K, type = "f")
+    I_y_smooth <- stats::convolve(I_y_rand - I_tilde, K, type = "f")
 
     Tn_star_val[i] <- sum(I_x_smooth^2 + I_y_smooth^2) / N * pi * 2
   }
@@ -169,6 +169,12 @@ phi_n_star_1d <- function(x, y, B, alpha, h) {
 
 #' @title \eqn{\varphi_n^*} for \eqn{p=1} and arbitray \eqn{q}.
 #'
+#' @param X numeric array of dims (N, M, q)
+#' @param B numeric value for the amount of randomization iterations
+#' @param alpha significance level, has to be numeric value in \eqn{(0,1]}
+#'
+#' @param h1 numeric positive value for kernel bandwidth along column axis
+#' @param h2 numeric positive value for kernel bandwidth along row axis
 phi_n_star_mv <- function(X, B, alpha, h1=.14, h2=.14) {
   dims <- dim(X)
   stopifnot(length(dims) == 3)
@@ -224,14 +230,24 @@ phi_n_stnry <- function(x, B, alpha, h1=.13, h2=.13) {
   dims <- dim(x)
   N <- dims[1]; M <- dims[2]
 
-  # devide into four equal segments
-  row_brd <- N %/% 2
-  col_brd <- M %/% 2
-  X <- array(0, dim=c(row_brd, col_brd, 4))
-  X[,,1] <- x[1:row_brd,1:col_brd]
-  X[,,2] <- x[(row_brd+1):(2*row_brd), 1:col_brd]
-  X[,,3] <- x[1:row_brd, (col_brd+1):(2*col_brd)]
-  X[,,4] <- x[(row_brd+1):(2*row_brd), (col_brd+1):(2*col_brd)]
+  # separation should be the half the width of the kernel,
+  # such that kernels don't overlap
+  sep_N <- floor(N * h1 * .5)
+  sep_M <- floor(M * h2 * .5)
+
+  N_tilde <- N / 2 - sep_N + N %% 2
+  M_tilde <- M / 2 - sep_M + N %% 2
+
+  if (N_tilde <= 1 | M_tilde <= 1) {
+    stop("sample is not large enough to properly seperate sub-regions")
+  }
+
+  # create sub regions
+  X <- array(0, dim=c(N_tilde, M_tilde, 4))
+  X[,,1] <- x[1:N_tilde, 1:M_tilde]
+  X[,,2] <- x[(N - N_tilde + 1):N, 1:M_tilde]
+  X[,,3] <- x[1:N_tilde, (M - M_tilde + 1):M]
+  X[,,4] <- x[(N - N_tilde + 1):N, (M - M_tilde + 1):M]
 
   # test for equality of spectral densities in each partition
   phi_n_star_mv(X, B, alpha, h1, h2)

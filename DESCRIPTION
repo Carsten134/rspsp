@@ -5,7 +5,7 @@ Version: 0.1.0
 Author: Carsten Stahl
 Maintainer: Carsten Stahl <carstenstahl122@gmail.com>
 Description: Introduces a new teststatistic for spatial and timeseries data, which tests for properties of spatial or temporal dependencies.
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: testthat (>= 3.0.0)

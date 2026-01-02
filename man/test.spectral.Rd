@@ -10,8 +10,8 @@ test.spectral(
   B,
   alpha,
   hypothesis = "equality",
-  h1 = length(x)^(-0.2),
-  h2 = length(x)^(-0.2)
+  h1 = length(x)^(-0.3333),
+  h2 = length(x)^(-0.3333)
 )
 }
 \arguments{
@@ -25,12 +25,12 @@ test.spectral(
 
 \item{hypothesis}{Can be one of `"equality", "isotropy", "stationary`}
 
-\item{h1}{Kernelbandwidth along first axis defaults to \eqn{(NM)^{-1/5}}}
+\item{h1}{Kernelbandwidth along first axis defaults to \eqn{(NM)^{-1/3}} (based on our simulation study this turned out to be a good option, if the lattice it not too rectangular)}
 
-\item{h2}{Kernelbandwidth along second axis defaults to \eqn{(NM)^{-1/5}}}
+\item{h2}{Kernelbandwidth along second axis defaults to \eqn{(NM)^{-1/3}}}
 }
 \description{
-Compute resampling test for equality or isotropy of spectral densities or other qualities of the spectral densities.
+Compute resampling test for equality, isotropy, and weak stationarity of spectral densities or other qualities of the spectral densities.
 Can be applied to both vectors and matrices. For more information see DOI: 10.3150/13-BEJ584.
 }
 \examples{
@@ -39,7 +39,7 @@ K0 <- MA_coef_all(.3)
 x <- gridMA(25, 25, K0)
 y <- gridMA(25, 25, K0)
 
-# applying the test with 100 iterations and significance 5\%
-JPtest(x, y, 100, .05)
+# applying the test with 300 iterations and significance 5\%
+test.spectral(x, y, 300, .05)
 
 }

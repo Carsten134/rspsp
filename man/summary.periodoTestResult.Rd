@@ -4,7 +4,12 @@
 \alias{summary.periodoTestResult}
 \title{summary generic for S3 testResult class}
 \usage{
-\method{summary}{periodoTestResult}(x, ...)
+\method{summary}{periodoTestResult}(object, ...)
+}
+\arguments{
+\item{object}{periodoTestResult Object}
+
+\item{...}{additional parameters (might be used in later versions)}
 }
 \description{
 summary generic for S3 testResult class

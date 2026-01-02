@@ -18,6 +18,14 @@ w_2d_bp <- function(omega_1, omega_2, N, M, hr = .5, hc = .5) {
 #' @title Construct Kernel from Barlett-Priestley window
 #'
 #' @description Used in the fast version of phi_n_star to construct a kernel for the convolution
+#'
+#' @param N positive integer for number of rows of lattice
+#' @param M positive integer for number of cols of lattice
+#' @param hr positive float for bandwidth along row axis
+#' @param hc positive float for bandwidht along column axis
+#'
+#'
+#' @keywords internal
 k_2d_bp <- function(N, M, hr = .5, hc = .5) {
   w <- (8*gamma(1))/(4*gamma(.5)^2*pi^2)
 

@@ -9,7 +9,7 @@ mvrnorm_grid <- function(N, M, Sigma) {
   A <- U %*% sqrt(L) %*% t(U)
 
   # simulating the data
-  x <- matrix(rnorm(2 * N * M), nrow = 2)
+  x <- matrix(stats::rnorm(2 * N * M), nrow = 2)
   x <- A %*% x
 
   return(list(x = matrix(x[1,], N, M),

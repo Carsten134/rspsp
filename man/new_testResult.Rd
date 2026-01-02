@@ -6,6 +6,25 @@
 \usage{
 new_testResult(Tn, Tn_star, decision, p_value, hypothesis, B, alpha, h1, h2)
 }
+\arguments{
+\item{Tn}{float value for \eqn{T_n}}
+
+\item{Tn_star}{float values (as vector of length \eqn{B}) representing all randomized values of \eqn{T_n^*}}
+
+\item{decision}{binary numeric (0, 1) value for acceptance (0) or rejection (1)}
+
+\item{p_value}{float for \eqn{p} value}
+
+\item{hypothesis}{string for type of hypothesis tested}
+
+\item{B}{integer representing the number of resampling iterations}
+
+\item{alpha}{float between 0 and 1 for significance level}
+
+\item{h1}{Bandwidth chosen for smoothing along row axis}
+
+\item{h2}{Bandwidth chosen for smoothing along column axis}
+}
 \description{
 Constructor for testResult object
 }

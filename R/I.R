@@ -10,8 +10,7 @@ I <- function(x){
   M <- ncol(x)
 
   # apply scaling ((2*pi)^2 is already in the fft)
-  # also devide by variance to make it a spectral density
-  res <- (1/(N * M))*abs(fft(x))^2
+  res <- (N * M)*abs(stats::fft(x))^2
 
   # fft shift such that 0 is at the center and nyquist is at the borders
   return(res[
@@ -24,11 +23,12 @@ I <- function(x){
   )
 }
 
+#' @noRd
 I_cross <- function(x, y){
   N <- nrow(x)
   M <- ncol(x)
   # apply the fft to both x and y
-  res <- abs(fft(x) * Conj(fft(y)))/(N * M * sqrt(var(as.vector(x)) * var(as.vector(y))))
+  res <- abs(stats::fft(x) * Conj(stats::fft(y)))/(N * M * sqrt(stats::var(as.vector(x)) * stats::var(as.vector(y))))
 
   # finally do the fft shift
   return(res[
@@ -41,10 +41,10 @@ I_cross <- function(x, y){
   )
 }
 
-#' @export
+#' @noRd
 I_1d <- function(x) {
   N <- length(x)
-  res <- abs(fft(x))^2/(N * sqrt(var(x)))
+  res <- abs(stats::fft(x))^2 / N
 
   return(res[
     c(

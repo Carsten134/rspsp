@@ -1,6 +1,16 @@
 
 #' @title Constructor for testResult object
 #'
+#' @param Tn float value for \eqn{T_n}
+#' @param Tn_star float values (as vector of length \eqn{B}) representing all randomized values of \eqn{T_n^*}
+#' @param decision binary numeric (0, 1) value for acceptance (0) or rejection (1)
+#' @param p_value float for \eqn{p} value
+#' @param hypothesis string for type of hypothesis tested
+#' @param B integer representing the number of resampling iterations
+#' @param alpha float between 0 and 1 for significance level
+#' @param h1 Bandwidth chosen for smoothing along row axis
+#' @param h2 Bandwidth chosen for smoothing along column axis
+#'
 #' @export
 new_testResult <- function(Tn, Tn_star, decision, p_value, hypothesis, B, alpha, h1, h2) {
   stopifnot(is.numeric(Tn))
@@ -29,7 +39,8 @@ new_testResult <- function(Tn, Tn_star, decision, p_value, hypothesis, B, alpha,
 
 #' @title Print generic for testResult S3 class
 #'
-#' @method print testResult
+#' @param x testResult object
+#' @param ... additional parameters for printing (might become relevant in future versions)
 #'
 #' @export
 print.testResult <- function(x, ...) {
@@ -41,7 +52,13 @@ print.testResult <- function(x, ...) {
 
 #' @title Print generic for testResult S3 class
 #'
-#' @method plot testResult
+#' @description
+#' Plots a histogram of \eqn{T_n^*} with \eqn{T_n} marked as a blue vertical line
+#' and \eqn{c_\alpha(T_n^*)} (the critical value) marked as a red vertical line
+#'
+#'
+#' @param x testResult object
+#' @param ... additional parameters for printing (might become relevant in future versions)
 #'
 #' @export
 plot.testResult <- function(x, ...) {
@@ -49,19 +66,23 @@ plot.testResult <- function(x, ...) {
   decision <- x$decision
   Tn_val <- x$Tn
   alpha <- x$alpha
-  par(mfrow = c(1,1))
+  graphics::par(mfrow = c(1,1))
 
-  hist(Tn_star_val, main = "Histogram of Tn*",
-       xlim = c(min(c(Tn_star_val, Tn_val)), max(c(Tn_star_val, Tn_val))),
-       breaks = 30)
-  abline(v = Tn_val, col = "blue")
-  abline(v = quantile(Tn_star_val, 1-alpha), col="red")
+  graphics::hist(Tn_star_val, main = "Histogram of Tn*",
+                 xlim = c(min(c(Tn_star_val, Tn_val)), max(c(Tn_star_val, Tn_val))),
+                 breaks = 30)
+  graphics::abline(v = Tn_val, col = "blue")
+  graphics::abline(v = stats::quantile(Tn_star_val, 1-alpha), col="red")
 }
 
 #' @title summary generic for S3 testResult class
 #'
+#' @param object testResult object
+#' @param ... additional parameters for printing (might become relevant in future versions)
+#'
 #' @export
-summary.testResult <- function(x, ...) {
+summary.testResult <- function(object, ...) {
+  x <- object
   cat("Resampling Test for", x$hypothesis, "Hypothesis. \n")
   cat("=========================================\n")
   cat("Resampling iterations:", x$B, "\n")
