@@ -1,6 +1,6 @@
-# Functional for precomputed D4 Orbit Groups
+# Functional for Precomputed D4 Orbit Groups
 
-Functional for precomputed D4 Orbit Groups
+Functional for Precomputed D4 Orbit Groups
 
 ## Usage
 

@@ -21,7 +21,3 @@ I_smooth(I, hr = 0.2, hc = 0.2)
 - hc:
 
   columnwise bandwidth
-
-- kernel:
-
-  kernel used to smooth

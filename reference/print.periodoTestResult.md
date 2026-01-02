@@ -8,3 +8,13 @@ summary generic for S3 testResult class
 # S3 method for class 'periodoTestResult'
 print(x, ...)
 ```
+
+## Arguments
+
+- x:
+
+  periodoTestResult object
+
+- ...:
+
+  additional arguments (might become relevant later)

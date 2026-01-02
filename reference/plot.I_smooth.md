@@ -6,11 +6,15 @@ This function plots a smoothed periodogramm.
 
 ``` r
 # S3 method for class 'I_smooth'
-plot(I_s, ...)
+plot(x, ...)
 ```
 
 ## Arguments
 
-- I_s:
+- x:
 
   I_smooth function
+
+- ...:
+
+  additional arguments might become relevant in later versions

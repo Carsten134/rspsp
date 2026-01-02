@@ -1,12 +1,17 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://carsten134.github.io/rspsp/404.html</loc></url>
+<url><loc>https://carsten134.github.io/rspsp/LICENSE-text.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/authors.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/index.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/C.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/I.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/I_smooth.html</loc></url>
+<url><loc>https://carsten134.github.io/rspsp/reference/MA_coef_all.html</loc></url>
+<url><loc>https://carsten134.github.io/rspsp/reference/MA_coef_col.html</loc></url>
+<url><loc>https://carsten134.github.io/rspsp/reference/MA_coef_row.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/apply_grouped.html</loc></url>
-<url><loc>https://carsten134.github.io/rspsp/reference/get_d4_groups.html</loc></url>
+<url><loc>https://carsten134.github.io/rspsp/reference/evaluate.grid_function.html</loc></url>
+<url><loc>https://carsten134.github.io/rspsp/reference/evaluate.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/gridAR.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/gridMA.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/index.html</loc></url>
@@ -14,15 +19,14 @@
 <url><loc>https://carsten134.github.io/rspsp/reference/mvgridMA.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/new_periodoTestResult.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/new_testResult.html</loc></url>
-<url><loc>https://carsten134.github.io/rspsp/reference/periodogram_unshifted.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/phi_n_star_mv.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/plot.I_smooth.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/plot.testResult.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/print.periodoTestResult.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/print.testResult.html</loc></url>
-<url><loc>https://carsten134.github.io/rspsp/reference/pt3.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/summary.periodoTestResult.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/summary.testResult.html</loc></url>
+<url><loc>https://carsten134.github.io/rspsp/reference/test.periodo.html</loc></url>
 <url><loc>https://carsten134.github.io/rspsp/reference/test.spectral.html</loc></url>
 </urlset>
 

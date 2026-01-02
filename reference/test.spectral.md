@@ -1,8 +1,9 @@
 # Resampling Test for Spectral Densities
 
-Compute resampling test for equality or isotropy of spectral densities
-or other qualities of the spectral densities. Can be applied to both
-vectors and matrices. For more information see DOI: 10.3150/13-BEJ584.
+Compute resampling test for equality, isotropy, and weak stationarity of
+spectral densities or other qualities of the spectral densities. Can be
+applied to both vectors and matrices. For more information see DOI:
+10.3150/13-BEJ584.
 
 ## Usage
 
@@ -13,8 +14,8 @@ test.spectral(
   B,
   alpha,
   hypothesis = "equality",
-  h1 = length(x)^(-0.2),
-  h2 = length(x)^(-0.2)
+  h1 = length(x)^(-0.3333),
+  h2 = length(x)^(-0.3333)
 )
 ```
 
@@ -44,11 +45,13 @@ test.spectral(
 
 - h1:
 
-  Kernelbandwidth along first axis defaults to \\(NM)^{-1/5}\\
+  Kernelbandwidth along first axis defaults to \\(NM)^{-1/3}\\ (based on
+  our simulation study this turned out to be a good option, if the
+  lattice it not too rectangular)
 
 - h2:
 
-  Kernelbandwidth along second axis defaults to \\(NM)^{-1/5}\\
+  Kernelbandwidth along second axis defaults to \\(NM)^{-1/3}\\
 
 ## Examples
 
@@ -58,7 +61,12 @@ K0 <- MA_coef_all(.3)
 x <- gridMA(25, 25, K0)
 y <- gridMA(25, 25, K0)
 
-# applying the test with 100 iterations and significance 5%
-JPtest(x, y, 100, .05)
-#> Error in JPtest(x, y, 100, 0.05): could not find function "JPtest"
+# applying the test with 300 iterations and significance 5%
+test.spectral(x, y, 300, .05)
+#> Warning: Kernel smoothed just one summand. Critical values broke, because Tn is invariant against permutation.
+#> Test Result for equality type 
+#>  ----------- 
+#> Tn: 354461859161 
+#> p_value: 0.7533333 
+#> decision:  Accepted H0 
 ```

@@ -6,5 +6,16 @@ summary generic for S3 testResult class
 
 ``` r
 # S3 method for class 'testResult'
-summary(x, ...)
+summary(object, ...)
 ```
+
+## Arguments
+
+- object:
+
+  testResult object
+
+- ...:
+
+  additional parameters for printing (might become relevant in future
+  versions)

@@ -17,7 +17,7 @@ sondern hat auch eine isotrope Kovarianzfunktion.
 ## Usage
 
 ``` r
-gridMA(N, M, K, padding = nrow(K)%/%2, distribution = "normal")
+gridMA(N, M, K, distribution = "normal")
 ```
 
 ## Arguments
@@ -29,6 +29,10 @@ gridMA(N, M, K, padding = nrow(K)%/%2, distribution = "normal")
 - M:
 
   columns of grid
+
+- K:
+
+  numeric matrix of kernel weights
 
 - distribution:
 

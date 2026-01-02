@@ -74,8 +74,8 @@
 <p>Just like the Jentsch, Pauly 2015 the test statistic is named <span class="math inline">\varphi_n^*</span></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># simulate 20 x 20 MA grid under H1</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gridMA.html">gridMA</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fu">MA_coef_col</span><span class="op">(</span><span class="fl">.7</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gridMA.html">gridMA</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fu">MA_coef_row</span><span class="op">(</span><span class="fl">.7</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gridMA.html">gridMA</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fu"><a href="reference/MA_coef_col.html">MA_coef_col</a></span><span class="op">(</span><span class="fl">.7</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gridMA.html">gridMA</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fu"><a href="reference/MA_coef_row.html">MA_coef_row</a></span><span class="op">(</span><span class="fl">.7</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># apply test statistic</span></span>
 <span><span class="fu">phi_n_star</span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>, <span class="fl">100</span>, <span class="fl">.05</span><span class="op">)</span></span></code></pre></div>
@@ -84,7 +84,9 @@
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a></li>
+<li>
+<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
+</li>
 </ul>
 </div>
 
