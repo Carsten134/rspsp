@@ -15,3 +15,9 @@
 Plots a histogram of \eqn{T_n^*} with \eqn{T_n} marked as a blue vertical line
 and \eqn{c_\alpha(T_n^*)} (the critical value) marked as a red vertical line
 }
+\examples{
+res <- new_testResult(1, c(0.5, 1.5), 0, 0.5, "equality", 2, 0.05, 0.1, 0.1)
+if (interactive()) {
+  plot(res)
+}
+}

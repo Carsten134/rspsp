@@ -2,7 +2,7 @@
 % Please edit documentation in R/gridMA.R
 \name{gridMA}
 \alias{gridMA}
-\title{simulating spatial MA process}
+\title{Simulate a spatial MA process}
 \usage{
 gridMA(N, M, K, distribution = "normal")
 }
@@ -19,5 +19,15 @@ gridMA(N, M, K, distribution = "normal")
 matrix with N rows and M columns
 }
 \description{
-Um unsere Implementierung validieren zu können, brauchen wir Daten, welche sowohl unter \eqn{H_0} als auch unter der Alternative erzeugt wurden. Wie bereits in der Einleitung erwähnt, wollen wir alles so simpel wie möglich halten. Der Prozess ist daher eine einfache Linearkombination von normalverteilten Variablen und stark von der Simulation eines \eqn{MA(q)} Prozesses inspiriert. Der Grundgedanke hierbei ist, dass wir die Koeffizienten \eqn{\varphi_k} des Lag-Polynoms reinterpretieren von "linearer Einfluss von Residuen zu Lag \eqn{k}" zu "linearer Einfluss von Residuen zum Abstand \eqn{k}". Also heißt dass für \eqn{X_{ij}}, dass jedes Residuum mit Abstand \eqn{k} einen linearen Einfluss von \eqn{\varphi_k} auf \eqn{X_{ij}} nimmt. Dieser Prozess lässt sich mit einer 2D Konvolution umsetzen und ist nicht nur stationär, sondern hat auch eine isotrope Kovarianzfunktion.
+To validate the implementation we need data generated under both \eqn{H_0}
+and the alternative. We therefore simulate a simple spatial \eqn{MA(q)} process.
+The idea is to interpret lag coefficients as distance based influence on
+\eqn{X_{ij}}, which can be implemented via a 2D convolution. The resulting
+process is stationary with an isotropic covariance function.
+}
+\examples{
+set.seed(1)
+K <- MA_coef_all(0.3)
+x <- gridMA(8, 8, K)
+dim(x)
 }

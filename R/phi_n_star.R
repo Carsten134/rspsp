@@ -38,8 +38,8 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2){
 
 
   # compute Tn
-  I_x_smooth <- EBImage::filter2(I_x - I_tilde, K_BP, "circular")
-  I_y_smooth <- EBImage::filter2(I_y - I_tilde, K_BP, "circular")
+  I_x_smooth <- convolve2d_circular(I_x - I_tilde, K_BP)
+  I_y_smooth <- convolve2d_circular(I_y - I_tilde, K_BP)
 
   # do Riemann sum over squared difference
   Tn_val <- sum(I_x_smooth^2 + I_y_smooth^2)*((2*pi)^2/(N*M))
@@ -57,8 +57,8 @@ phi_n_star_fast <- function(x, y, B, alpha, hr = .2, hc = .2){
     I_y_rand <- I_x*perm_n + I_y*perm
 
     # capture difference
-    I_x_smooth <- EBImage::filter2(I_x_rand - I_tilde, K_BP, "circular")
-    I_y_smooth <- EBImage::filter2(I_y_rand - I_tilde, K_BP, "circular")
+    I_x_smooth <- convolve2d_circular(I_x_rand - I_tilde, K_BP)
+    I_y_smooth <- convolve2d_circular(I_y_rand - I_tilde, K_BP)
 
     # integrate difference
     Tn_star_val[i] <- sum(I_x_smooth^2 + I_y_smooth^2)*((2*pi)^2/(N*M))
@@ -92,14 +92,14 @@ phi_n_star_iso <- function(x, B, alpha, h1, h2) {
   orbit_groups <- get_d4_groups(N, M)
   I_x_diff <- apply_grouped(I_x, orbit_groups, function(x) x - mean(x))
 
-  Tn_diff <- EBImage::filter2(I_x_diff, K_BP, "circular")
+  Tn_diff <- convolve2d_circular(I_x_diff, K_BP)
   Tn_val <- sum(Tn_diff^2) *((2*pi)^2 / (N * M))
 
   # Computing Tn_star
   Tn_star_val <- numeric(B)
   for (i in 1:B) {
     I_x_diff_rand <- apply_grouped(I_x_diff, orbit_groups, sample)
-    diffs <- EBImage::filter2(I_x_diff_rand, K_BP, "circular")
+    diffs <- convolve2d_circular(I_x_diff_rand, K_BP)
     Tn_star_val[i] <- sum(diffs^2) * ((2*pi)^2 / (N * M))
   }
   # accounting for machine error when comparing values
@@ -198,7 +198,7 @@ phi_n_star_mv <- function(X, B, alpha, h1=.14, h2=.14) {
   Kh <- k_2d_bp(N, M, h1, h2)
   s <- sqrt(h1 * h2)/(N * M)
   for(i in 1:q) {
-    Tn <- Tn + sum(EBImage::filter2(I_X[,,i], Kh, "circular")^2)
+    Tn <- Tn + sum(convolve2d_circular(I_X[,,i], Kh)^2)
   }
   Tn <- s * Tn
 
@@ -208,7 +208,7 @@ phi_n_star_mv <- function(X, B, alpha, h1=.14, h2=.14) {
     I_X_rand <- permute_periodogram(I_X)
     current_Tn_star <- 0
     for (i in 1:q) {
-      current_Tn_star <- current_Tn_star + sum(EBImage::filter2(I_X_rand[,,i], Kh, "circular")^2)
+      current_Tn_star <- current_Tn_star + sum(convolve2d_circular(I_X_rand[,,i], Kh)^2)
     }
     Tn_star[j] <- s * current_Tn_star
   }

@@ -14,7 +14,18 @@ f_true_MA <- function(K) {
   return(f)
 }
 
+#' @title Plot a spectral density
+#'
+#' @param x spectral_density object
+#' @param ... additional arguments passed to the plot
+#'
 #' @exportS3Method base::plot
+#' @examples
+#' f <- function(x, y) cos(x) + cos(y)
+#' class(f) <- c("spectral_density", "grid_function")
+#' if (interactive()) {
+#'   plot(f)
+#' }
 plot.spectral_density <- function(x, ...) {
   f <- x
   vals = evaluate(f)

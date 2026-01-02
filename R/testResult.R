@@ -12,6 +12,9 @@
 #' @param h2 Bandwidth chosen for smoothing along column axis
 #'
 #' @export
+#' @examples
+#' res <- new_testResult(1, c(0.5, 1.5), 0, 0.5, "equality", 2, 0.05, 0.1, 0.1)
+#' res
 new_testResult <- function(Tn, Tn_star, decision, p_value, hypothesis, B, alpha, h1, h2) {
   stopifnot(is.numeric(Tn))
   stopifnot(is.numeric(Tn_star))
@@ -43,6 +46,9 @@ new_testResult <- function(Tn, Tn_star, decision, p_value, hypothesis, B, alpha,
 #' @param ... additional parameters for printing (might become relevant in future versions)
 #'
 #' @export
+#' @examples
+#' res <- new_testResult(1, c(0.5, 1.5), 0, 0.5, "equality", 2, 0.05, 0.1, 0.1)
+#' print(res)
 print.testResult <- function(x, ...) {
   cat("Test Result for", x$hypothesis, "type", "\n", "-----------", "\n")
   cat("Tn:", x$Tn, "\n")
@@ -61,6 +67,11 @@ print.testResult <- function(x, ...) {
 #' @param ... additional parameters for printing (might become relevant in future versions)
 #'
 #' @export
+#' @examples
+#' res <- new_testResult(1, c(0.5, 1.5), 0, 0.5, "equality", 2, 0.05, 0.1, 0.1)
+#' if (interactive()) {
+#'   plot(res)
+#' }
 plot.testResult <- function(x, ...) {
   Tn_star_val <- x$Tn_star
   decision <- x$decision
@@ -81,6 +92,9 @@ plot.testResult <- function(x, ...) {
 #' @param ... additional parameters for printing (might become relevant in future versions)
 #'
 #' @export
+#' @examples
+#' res <- new_testResult(1, c(0.5, 1.5), 0, 0.5, "equality", 2, 0.05, 0.1, 0.1)
+#' summary(res)
 summary.testResult <- function(object, ...) {
   x <- object
   cat("Resampling Test for", x$hypothesis, "Hypothesis. \n")

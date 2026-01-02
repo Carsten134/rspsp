@@ -16,3 +16,9 @@ evaluate(f, N, M)
 \description{
 Evaluates functions on a grid
 }
+\examples{
+f <- function(x, y) x + y
+class(f) <- "grid_function"
+vals <- evaluate(f, 4, 4)
+dim(vals$z)
+}

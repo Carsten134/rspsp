@@ -14,3 +14,7 @@
 \description{
 Print generic for testResult S3 class
 }
+\examples{
+res <- new_testResult(1, c(0.5, 1.5), 0, 0.5, "equality", 2, 0.05, 0.1, 0.1)
+print(res)
+}

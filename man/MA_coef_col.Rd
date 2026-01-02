@@ -14,3 +14,6 @@ MA_coef_col(value, size = 3)
 \description{
 Generate Coefficient Matrix for MA Process
 }
+\examples{
+MA_coef_col(0.5)
+}

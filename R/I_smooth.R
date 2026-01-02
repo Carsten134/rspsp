@@ -6,7 +6,15 @@
 #' @param hr rowwise bandwidth
 #' @param hc columnwise bandwidth
 #'
-I_smooth <- function(I,hr = .2, hc = .2) {
+#' @export
+#'
+#' @examples
+#' set.seed(1)
+#' x <- matrix(rnorm(9), nrow = 3)
+#' smoothed_periodo <- I_smooth(I(x))
+#' plot(smoothed_periodo)
+#'
+I_smooth <- function(I, hr = .2, hc = .2) {
   N <- nrow(I)
   M <- ncol(I)
 
@@ -31,6 +39,11 @@ I_smooth <- function(I,hr = .2, hc = .2) {
 #' @param M integer for cols of output matrix
 #'
 #' @export
+#' @examples
+#' f <- function(x, y) x + y
+#' class(f) <- "grid_function"
+#' vals <- evaluate(f, 4, 4)
+#' dim(vals$z)
 evaluate <- function(f, N, M) {
   UseMethod("evaluate")
 }
@@ -46,6 +59,7 @@ evaluate <- function(f, N, M) {
 #' @param N integer for number of rows to generate
 #' @param M integer for number of columns to generate
 #'
+#' @export
 #'
 evaluate.grid_function <- function(f, N = 30, M = 30) {
   x <- seq(-pi+1e-5, pi-1e-5, length.out = N)
@@ -70,6 +84,13 @@ evaluate.grid_function <- function(f, N = 30, M = 30) {
 #' @param ... additional arguments might become relevant in later versions
 #'
 #' @export
+#' @examples
+#' set.seed(1)
+#' I <- matrix(rnorm(9), nrow = 3)
+#' spec <- I_smooth(I)
+#' if (interactive()) {
+#'   plot(spec)
+#' }
 #'
 plot.I_smooth <- function(x, ...) {
   I_s <- x

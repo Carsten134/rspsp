@@ -13,7 +13,10 @@
 #' @param wold_size Size of the Wold-weight lattice, defaults to 50.
 #'
 #' @return Numeric matrix with `N` rows and `M` columns.
-#' @importFrom EBImage filter2
+#' @examples
+#' set.seed(1)
+#' x <- gridAR(8, 8, 0.2, 0.1, 0.05)
+#' dim(x)
 #' @export
 gridAR <- function(N,
                    M,
@@ -42,7 +45,7 @@ gridAR <- function(N,
   M_tilde <- M + 2 * padding
 
   eps <- matrix(stats::rnorm(N_tilde * M_tilde), nrow = N_tilde, ncol = M_tilde)
-  conv <- EBImage::filter2(eps, kernel)
+  conv <- convolve2d_circular(eps, kernel)
 
   row_idx <- seq.int(padding + 1, padding + N)
   col_idx <- seq.int(padding + 1, padding + M)

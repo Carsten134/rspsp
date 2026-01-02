@@ -6,6 +6,8 @@ fourier_freq <- function(N) 2*pi*((-((N - 1) %/% 2)):(N %/% 2))/N
 #' @param size size of the matrix
 #'
 #' @export
+#' @examples
+#' MA_coef_col(0.5)
 MA_coef_col <- function(value, size = 3) {
   K <- matrix(0, size, size)
   K[, (size %/% 2 + 1)] <- value
@@ -20,6 +22,8 @@ MA_coef_col <- function(value, size = 3) {
 #' @param size size of the matrix
 #'
 #' @export
+#' @examples
+#' MA_coef_row(0.5)
 MA_coef_row <- function(value, size = 3) {
   K <- matrix(0, size, size)
   K[(size %/% 2 + 1), ] <- value
@@ -34,6 +38,8 @@ MA_coef_row <- function(value, size = 3) {
 #' @param size size of the matrix
 #'
 #' @export
+#' @examples
+#' MA_coef_all(0.5)
 MA_coef_all <- function(value, size = 3) {
   K <- matrix(value, size, size)
   K[(size %/% 2 + 1), (size %/% 2 + 1)] <- 1
@@ -47,6 +53,48 @@ add_zero_padding <- function(A, padding_row, padding_col) {
   result[(padding_row + 1):(padding_row + nrow(A)),
          (padding_col + 1):(padding_col + ncol(A))] <- A
   return(result)
+}
+
+circ_shift_matrix <- function(mat, shift_r = 0, shift_c = 0) {
+  nr <- nrow(mat)
+  nc <- ncol(mat)
+  if (nr == 0 || nc == 0) {
+    return(mat)
+  }
+
+  sr <- ((shift_r %% nr) + nr) %% nr
+  sc <- ((shift_c %% nc) + nc) %% nc
+
+  if (sr != 0) {
+    mat <- mat[c((nr - sr + 1):nr, 1:(nr - sr)), , drop = FALSE]
+  }
+  if (sc != 0) {
+    mat <- mat[, c((nc - sc + 1):nc, 1:(nc - sc)), drop = FALSE]
+  }
+
+  mat
+}
+
+convolve2d_circular <- function(x, kernel) {
+  stopifnot(is.matrix(x), is.matrix(kernel))
+  nr <- nrow(x)
+  nc <- ncol(x)
+  kr <- nrow(kernel)
+  kc <- ncol(kernel)
+
+  if (kr > nr || kc > nc) {
+    stop("kernel must not be larger than x in either dimension")
+  }
+
+  pad <- matrix(0, nrow = nr, ncol = nc)
+  pad[1:kr, 1:kc] <- kernel
+
+  center_r <- (kr + 1) %/% 2
+  center_c <- (kc + 1) %/% 2
+  pad <- circ_shift_matrix(pad, -(center_r - 1), -(center_c - 1))
+
+  conv <- stats::fft(stats::fft(x) * stats::fft(pad), inverse = TRUE) / (nr * nc)
+  Re(conv)
 }
 
 fourier_dist <- function(N) {

@@ -14,6 +14,12 @@
 #'
 #' @returns An object of type periodoTestResult
 #' @export
+#' @examples
+#' set.seed(1)
+#' K0 <- MA_coef_all(0.3)
+#' x <- gridMA(8, 8, K0)
+#' y <- gridMA(8, 8, K0)
+#' test.periodo(x, y, 0.05)
 test.periodo <- function(x, y, alpha) {
   # basic type checking and
   stopifnot(is.numeric(x) & is.numeric(y), is.numeric(alpha))

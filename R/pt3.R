@@ -73,6 +73,9 @@ pt3 <- function(x, y, alpha) {
 #' @param hypothesis type of hypothesis
 #'
 #' @export
+#' @examples
+#' res <- new_periodoTestResult(1.2, 0.1, 0, 0.05, "equality")
+#' res
 new_periodoTestResult <- function(test_value, p_value, decision, alpha, hypothesis) {
   stopifnot(is.numeric(test_value))
   stopifnot(is.numeric(decision))
@@ -97,6 +100,9 @@ new_periodoTestResult <- function(test_value, p_value, decision, alpha, hypothes
 #' @param ... additional parameters (might be used in later versions)
 #'
 #' @export
+#' @examples
+#' res <- new_periodoTestResult(1.2, 0.1, 0, 0.05, "equality")
+#' summary(res)
 summary.periodoTestResult <- function(object, ...) {
   x <- object
   cat("Periodogram Test for", x$hypothesis, "Hypothesis. \n")
@@ -114,6 +120,9 @@ summary.periodoTestResult <- function(object, ...) {
 #' @param ... additional arguments (might become relevant later)
 #'
 #' @export
+#' @examples
+#' res <- new_periodoTestResult(1.2, 0.1, 0, 0.05, "equality")
+#' print(res)
 print.periodoTestResult <- function(x, ...) {
   cat("Periodogram Test for", x$hypothesis, "Hypothesis. \n")
   cat("\n\nResults \n-----------------------------------------\n")

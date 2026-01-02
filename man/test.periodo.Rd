@@ -24,3 +24,10 @@ An object of type periodoTestResult
  \deqn{PT_3 = \sqrt{12n}(\overline{|G|-1/2}) \overset d\longrightarrow \mathcal N(0,1)}
  Critical values are drawn from the standard normal distirbution.
 }
+\examples{
+set.seed(1)
+K0 <- MA_coef_all(0.3)
+x <- gridMA(8, 8, K0)
+y <- gridMA(8, 8, K0)
+test.periodo(x, y, 0.05)
+}

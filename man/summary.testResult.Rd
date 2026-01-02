@@ -14,3 +14,7 @@
 \description{
 summary generic for S3 testResult class
 }
+\examples{
+res <- new_testResult(1, c(0.5, 1.5), 0, 0.5, "equality", 2, 0.05, 0.1, 0.1)
+summary(res)
+}

@@ -20,3 +20,7 @@ new_periodoTestResult(test_value, p_value, decision, alpha, hypothesis)
 \description{
 Constructor for periodoTestResult object
 }
+\examples{
+res <- new_periodoTestResult(1.2, 0.1, 0, 0.05, "equality")
+res
+}

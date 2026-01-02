@@ -29,3 +29,8 @@ Numeric matrix with `N` rows and `M` columns.
 Generates one realisation from an autoregressive process on an
 \eqn{N \times M} lattice by using the Wold-weight deconstruction.
 }
+\examples{
+set.seed(1)
+x <- gridAR(8, 8, 0.2, 0.1, 0.05)
+dim(x)
+}
