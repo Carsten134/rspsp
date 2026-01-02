@@ -46,3 +46,15 @@ new_testResult(Tn, Tn_star, decision, p_value, hypothesis, B, alpha, h1, h2)
 - h2:
 
   Bandwidth chosen for smoothing along column axis
+
+## Examples
+
+``` r
+res <- new_testResult(1, c(0.5, 1.5), 0, 0.5, "equality", 2, 0.05, 0.1, 0.1)
+res
+#> Test Result for equality type 
+#>  ----------- 
+#> Tn: 1 
+#> p_value: 0.5 
+#> decision:  Accepted H0 
+```

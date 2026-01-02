@@ -21,3 +21,13 @@ evaluate(f, N, M)
 - M:
 
   integer for cols of output matrix
+
+## Examples
+
+``` r
+f <- function(x, y) x + y
+class(f) <- "grid_function"
+vals <- evaluate(f, 4, 4)
+dim(vals$z)
+#> [1] 4 4
+```

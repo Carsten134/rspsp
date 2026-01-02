@@ -17,3 +17,13 @@ MA_coef_row(value, size = 3)
 - size:
 
   size of the matrix
+
+## Examples
+
+``` r
+MA_coef_row(0.5)
+#>      [,1] [,2] [,3]
+#> [1,]  0.0    0  0.0
+#> [2,]  0.5    1  0.5
+#> [3,]  0.0    0  0.0
+```

@@ -23,7 +23,7 @@
 - [`gridAR()`](https://carsten134.github.io/rspsp/reference/gridAR.md) :
   Simulate a lattice AR(1) process
 - [`gridMA()`](https://carsten134.github.io/rspsp/reference/gridMA.md) :
-  simulating spatial MA process
+  Simulate a spatial MA process
 - [`mvgridMA()`](https://carsten134.github.io/rspsp/reference/mvgridMA.md)
   : Correlated MA process
 - [`new_periodoTestResult()`](https://carsten134.github.io/rspsp/reference/new_periodoTestResult.md)
@@ -34,6 +34,8 @@
   : \\\varphi_n^\*\\ for \\p=1\\ and arbitray \\q\\.
 - [`plot(`*`<I_smooth>`*`)`](https://carsten134.github.io/rspsp/reference/plot.I_smooth.md)
   : Plot an smoothed periodogramm
+- [`plot(`*`<spectral_density>`*`)`](https://carsten134.github.io/rspsp/reference/plot.spectral_density.md)
+  : Plot a spectral density
 - [`plot(`*`<testResult>`*`)`](https://carsten134.github.io/rspsp/reference/plot.testResult.md)
   : Print generic for testResult S3 class
 - [`print(`*`<periodoTestResult>`*`)`](https://carsten134.github.io/rspsp/reference/print.periodoTestResult.md)

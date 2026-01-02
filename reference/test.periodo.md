@@ -36,3 +36,21 @@ test.periodo(x, y, alpha)
 ## Value
 
 An object of type periodoTestResult
+
+## Examples
+
+``` r
+set.seed(1)
+K0 <- MA_coef_all(0.3)
+x <- gridMA(8, 8, K0)
+y <- gridMA(8, 8, K0)
+test.periodo(x, y, 0.05)
+#> Periodogram Test for equality Hypothesis. 
+#> 
+#> 
+#> Results 
+#> -----------------------------------------
+#> Tn: -0.06621311 
+#> p: 0.5263959 
+#> Decision: Accepted H0 
+```

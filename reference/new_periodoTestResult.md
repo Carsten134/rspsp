@@ -29,3 +29,18 @@ new_periodoTestResult(test_value, p_value, decision, alpha, hypothesis)
 - hypothesis:
 
   type of hypothesis
+
+## Examples
+
+``` r
+res <- new_periodoTestResult(1.2, 0.1, 0, 0.05, "equality")
+res
+#> Periodogram Test for equality Hypothesis. 
+#> 
+#> 
+#> Results 
+#> -----------------------------------------
+#> Tn: 1.2 
+#> p: 0.1 
+#> Decision: Accepted H0 
+```

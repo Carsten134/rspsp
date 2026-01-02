@@ -66,7 +66,7 @@ test.spectral(x, y, 300, .05)
 #> Warning: Kernel smoothed just one summand. Critical values broke, because Tn is invariant against permutation.
 #> Test Result for equality type 
 #>  ----------- 
-#> Tn: 354461859161 
-#> p_value: 0.7533333 
+#> Tn: 393369405267 
+#> p_value: 0.8233333 
 #> decision:  Accepted H0 
 ```
