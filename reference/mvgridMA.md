@@ -61,3 +61,17 @@ mvgridMA(N, M, K0, K1, K0_off, K1_off, sigma)
 ## Value
 
 \`list\` object with entries X1 and X2
+
+## Examples
+
+``` r
+K <- MA_coef_all(.7)
+K_off <- K * .5
+
+x <- mvgridMA(25, 25, K, K, K_off, K_off, .4)
+par(mfrow=c(1,2))
+image(x$X1)
+image(x$X2)
+
+
+```

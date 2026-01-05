@@ -41,7 +41,6 @@ matrix with N rows and M columns
 ``` r
 set.seed(1)
 K <- MA_coef_all(0.3)
-x <- gridMA(8, 8, K)
-dim(x)
-#> [1] 8 8
+x <- gridMA(25, 25, K)
+image(x)
 ```

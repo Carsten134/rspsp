@@ -86,3 +86,8 @@ phi_n_star(x,y, 100, .05)
 - [`test.spectral()`](https://carsten134.github.io/rspsp/reference/test.spectral.md)
   : Resampling Test for Spectral Densities
 
+# Articles
+
+### All vignettes
+
+- [rspsp](https://carsten134.github.io/rspsp/articles/rspsp.md):

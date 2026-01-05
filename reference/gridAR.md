@@ -48,7 +48,6 @@ Numeric matrix with \`N\` rows and \`M\` columns.
 
 ``` r
 set.seed(1)
-x <- gridAR(8, 8, 0.2, 0.1, 0.05)
-dim(x)
-#> [1] 8 8
+x <- gridAR(25, 25, 0.8, 0.1, 0.05)
+image(x)
 ```
