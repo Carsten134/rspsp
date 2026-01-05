@@ -17,8 +17,8 @@
 #' @examples
 #' set.seed(1)
 #' K <- MA_coef_all(0.3)
-#' x <- gridMA(8, 8, K)
-#' dim(x)
+#' x <- gridMA(25, 25, K)
+#' image(x)
 gridMA <- function(N, M, K, distribution="normal") {
   padding <- nrow(K) %/% 2
 

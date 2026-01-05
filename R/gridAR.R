@@ -15,8 +15,8 @@
 #' @return Numeric matrix with `N` rows and `M` columns.
 #' @examples
 #' set.seed(1)
-#' x <- gridAR(8, 8, 0.2, 0.1, 0.05)
-#' dim(x)
+#' x <- gridAR(25, 25, 0.8, 0.1, 0.05)
+#' image(x)
 #' @export
 gridAR <- function(N,
                    M,

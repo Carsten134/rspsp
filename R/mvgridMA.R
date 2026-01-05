@@ -22,6 +22,18 @@
 #' @param sigma \eqn{\sigma}, `numeric` for correlation between whitenoise
 #'
 #' @returns `list` object with entries X1 and X2
+#'
+#' @export
+#' @examples
+#' K <- MA_coef_all(.7)
+#' K_off <- K * .5
+#'
+#' x <- mvgridMA(25, 25, K, K, K_off, K_off, .4)
+#' par(mfrow=c(1,2))
+#' image(x$X1)
+#' image(x$X2)
+#'
+#'
 mvgridMA <- function(N, M, K0, K1, K0_off, K1_off, sigma) {
   # building covariance matrix
   Sigma <- matrix(sigma, 2, 2)

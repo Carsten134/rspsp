@@ -37,3 +37,14 @@ The two univariate moving average randomfieds simulated by this function are not
 \deqn{X_i^{(1)} = \sum_{j}\epsilon_{i-j}^{(1)}K_{0,j} + \sum_l \epsilon_{i-l}^{(2)}K_{0_{off}, l}}
 And analogous for \eqn{X_i^{(2)}}.
 }
+\examples{
+K <- MA_coef_all(.7)
+K_off <- K * .5
+
+x <- mvgridMA(25, 25, K, K, K_off, K_off, .4)
+par(mfrow=c(1,2))
+image(x$X1)
+image(x$X2)
+
+
+}

@@ -10,7 +10,8 @@
 #'
 #' @examples
 #' set.seed(1)
-#' x <- matrix(rnorm(9), nrow = 3)
+#' K <- MA_coef_all(.7)
+#' x <- gridMA(25, 25, K)
 #' smoothed_periodo <- I_smooth(I(x))
 #' plot(smoothed_periodo)
 #'

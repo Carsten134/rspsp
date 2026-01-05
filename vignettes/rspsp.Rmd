@@ -1,0 +1,28 @@
+---
+title: "rspsp"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{rspsp}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(rspsp)
+```
+
+# Getting Started with `rspsp`
+`rspsp` (R *sp*atial *sp*ectral analysis) contains tools for analyzing spatial lattice data. Its main features include:
+\begin{enumerate}
+  \item Test statistics for modelling assumptions
+  \item Diagnostic tools for assessing the spectrum
+  \item Samplers for random data
+\end{enumerate}
+

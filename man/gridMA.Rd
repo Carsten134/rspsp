@@ -28,6 +28,6 @@ process is stationary with an isotropic covariance function.
 \examples{
 set.seed(1)
 K <- MA_coef_all(0.3)
-x <- gridMA(8, 8, K)
-dim(x)
+x <- gridMA(25, 25, K)
+image(x)
 }
