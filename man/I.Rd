@@ -19,3 +19,9 @@ Computes 2D Periodogramm. Consider the discrete Fourier transform of the sample:
 Then the 2D periodogram is given by:
 \deqn{I(\omega_{kl}) = J(\omega_{kl})\,\overline{J(\omega_{kl})} = \big|J(\omega_{kl})\big|^2}
 }
+\examples{
+x <- gridMA(25, 25, MA_coef_all(.7))
+image(I(x))
+
+
+}

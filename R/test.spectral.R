@@ -63,7 +63,7 @@ test.spectral <- function(x, y, B, alpha, hypothesis="equality", h1=length(x)^(-
 
   # finally, check if kernel smoothes at least one other summand
   num_sum <- dims_x * c(h1, h2) / 2
-  if (all(num_sum < 2)) {
+  if (all(num_sum < 1)) {
     warning("Kernel smoothed just one summand. Critical values broke, because Tn is invariant against permutation.")
   }
 
