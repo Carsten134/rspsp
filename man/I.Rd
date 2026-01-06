@@ -13,5 +13,9 @@ I(x)
 martix with results
 }
 \description{
-Computes 2D Periodogramm
+Computes 2D Periodogramm. Consider the discrete Fourier transform of the sample:
+\deqn{J({\omega}) = \frac{1}{\sqrt{2\pi NM}} \sum_{s\in S} x(s)\,\exp\!\left(-i\langle s,{\omega}\rangle\right)}
+
+Then the 2D periodogram is given by:
+\deqn{I(\omega_{kl}) = J(\omega_{kl})\,\overline{J(\omega_{kl})} = \big|J(\omega_{kl})\big|^2}
 }

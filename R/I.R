@@ -1,12 +1,21 @@
 #' @title 2D Periodogramm
 #'
-#' @description Computes 2D Periodogramm
+#' @description Computes 2D Periodogramm. Consider the discrete Fourier transform of the sample:
+#' \deqn{J({\omega}) = \frac{1}{\sqrt{2\pi NM}} \sum_{s\in S} x(s)\,\exp\!\left(-i\langle s,{\omega}\rangle\right)}
+#'
+#' Then the 2D periodogram is given by:
+#' \deqn{I(\omega_{kl}) = J(\omega_{kl})\,\overline{J(\omega_{kl})} = \big|J(\omega_{kl})\big|^2}
 #'
 #' @param x matrix with data from stationary spatial process
 #'
 #' @returns martix with results
 #'
 #' @export
+#' @examples
+#' x <- gridMA(25, 25, MA_coef_all(.7))
+#' image(I(x))
+#'
+#'
 I <- function(x){
   N <- nrow(x)
   M <- ncol(x)
