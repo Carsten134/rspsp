@@ -1,5 +1,5 @@
 ---
-title: "rspsp"
+title: "`rspsp`: Spatial Spectral Analysis in R"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{rspsp}
@@ -14,15 +14,99 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+```{r setup, include = FALSE}
 library(rspsp)
 ```
 
-# Getting Started with `rspsp`
-`rspsp` (R *sp*atial *sp*ectral analysis) contains tools for analyzing spatial lattice data. Its main features include:
-\begin{enumerate}
-  \item Test statistics for modelling assumptions
-  \item Diagnostic tools for assessing the spectrum
-  \item Samplers for random data
-\end{enumerate}
+`rspsp` contains tools for analyzing spatial lattice data. Its main features include:
 
+1. Samplers for random data
+2. Diagnostic tools for assessing the spectrum
+3. Test statistics for modeling assumptions and comparing spectra
+
+
+# Generating Random Data
+One of the easiest ways of fetching practice data for our tool is to generate new synthetic data. We offer two different spatial processes and one correlated extension:
+
+* `gridMA()`
+* `gridAR()`
+* `mvgridMA()`
+
+To generate a sample, simply generate coefficients using one of our utils (`MA_coef_all()`, `MA_coef_row()`, `MA_coef_col()`) and then use the sampler. For details on the usage of other samplers you can see Reference.:
+```{r generation-of-data}
+# generate new coefficient matrix for 
+K0 <- MA_coef_all(.5)
+
+x <- gridMA(75, 75, K0)
+
+image(x)
+```
+
+# Inspecting the Periodogram and Spectral Density
+Before testing your sample you can inspect the spectral properties with the `I()` function:
+```{r}
+image(I(x))
+```
+To inspect the spectral density estimate use `I_smooth()` we also offer a `plot` generic for the returned object:
+
+```{r}
+I_x_smooth <- I_smooth(I(x))
+
+plot(I_x_smooth)
+```
+
+# Testing for Equal Spectra
+Test for equal spectra by either using by one of `test.periodo()` or `test.spectral()`.
+
+```{r}
+y <- gridMA(75, 75, K0)
+
+# apply periodogram based test Scaccia and Marin (2005)
+summary(test.periodo(x, y, .05))
+```
+```{r}
+# apply randomized test after Jentsch and Pauly (2015)
+res <- test.spectral(x, y, 300, .05)
+summary(res)
+```
+
+
+You can also visualize the distribution of the randomized samples \eqn{T_n^*} against the $L_2$ type test $T_n$ (see `test_spectral()` for more detail):
+```{r}
+plot(res)
+```
+
+# Testing for Isotropy
+
+`test.spectral()` is applicable to other hypothesis for modelling assumptions. If you want to test for weak isotropy simply set `hypothesis="isotropy"`
+
+```{r}
+# make sure to pass NULL for y
+res <- test.spectral(x, NULL, 300, .05, hypothesis="isotropy")
+
+summary(res)
+plot(res)
+```
+If we would now consider a non-isotropic process:
+
+```{r}
+x <- gridMA(50, 50, MA_coef_row(.7))
+image(I(x))
+```
+...the test will reject:
+```{r}
+res <- test.spectral(x, NULL, 300, .05, hypothesis="isotropy")
+summary(res)
+
+plot(res)
+```
+
+
+you can also test for weak stationarity using `hypothesis=stationary`
+
+```{r}
+res <- test.spectral(x, NULL, 300, .05, hypothesis="stationary")
+
+summary(res)
+plot(res)
+```
