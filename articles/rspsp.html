@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>rspsp • rspsp</title>
+<title>`rspsp`: Spatial Spectral Analysis in R • rspsp</title>
 <!-- katex math --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm/Yr2r3Dy4lfFg" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb/GhzOouOXtZMP/7XUzwPTstBeZFe/+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script><script src="../katex-auto.js"></script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="rspsp">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="`rspsp`: Spatial Spectral Analysis in R">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -58,7 +58,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>rspsp</h1>
+      <h1>`rspsp`: Spatial Spectral Analysis in R</h1>
             
       
 
@@ -67,16 +67,172 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://carsten134.github.io/rspsp/">rspsp</a></span><span class="op">)</span></span></code></pre></div>
+<p><code>rspsp</code> contains tools for analyzing spatial lattice data.
+Its main features include:</p>
+<ol style="list-style-type: decimal">
+<li>Samplers for random data</li>
+<li>Diagnostic tools for assessing the spectrum</li>
+<li>Test statistics for modeling assumptions and comparing spectra</li>
+</ol>
 <div class="section level2">
-<h2 id="getting-started-with-rspsp">Getting Started with <code>rspsp</code><a class="anchor" aria-label="anchor" href="#getting-started-with-rspsp"></a>
+<h2 id="generating-random-data">Generating Random Data<a class="anchor" aria-label="anchor" href="#generating-random-data"></a>
 </h2>
-<code>rspsp</code> (R <em>sp</em>atial <em>sp</em>ectral analysis)
-contains tools for analyzing spatial lattice data. Its main features
-include:
+<p>One of the easiest ways of fetching practice data for our tool is to
+generate new synthetic data. We offer two different spatial processes
+and one correlated extension:</p>
+<ul>
+<li><code><a href="../reference/gridMA.html">gridMA()</a></code></li>
+<li><code><a href="../reference/gridAR.html">gridAR()</a></code></li>
+<li><code><a href="../reference/mvgridMA.html">mvgridMA()</a></code></li>
+</ul>
+<p>To generate a sample, simply generate coefficients using one of our
+utils (<code><a href="../reference/MA_coef_all.html">MA_coef_all()</a></code>, <code><a href="../reference/MA_coef_row.html">MA_coef_row()</a></code>,
+<code><a href="../reference/MA_coef_col.html">MA_coef_col()</a></code>) and then use the sampler. For details on the
+usage of other samplers you can see Reference.:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># generate new coefficient matrix for </span></span>
+<span><span class="va">K0</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/MA_coef_all.html">MA_coef_all</a></span><span class="op">(</span><span class="fl">.5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gridMA.html">gridMA</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span>, <span class="va">K0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<p><img src="rspsp_files/figure-html/generation-of-data-1.png" class="r-plt" alt="" width="700"></p>
 </div>
-  </main>
+<div class="section level2">
+<h2 id="inspecting-the-periodogram-and-spectral-density">Inspecting the Periodogram and Spectral Density<a class="anchor" aria-label="anchor" href="#inspecting-the-periodogram-and-spectral-density"></a>
+</h2>
+<p>Before testing your sample you can inspect the spectral properties
+with the <code><a href="../reference/I.html">I()</a></code> function:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="fu"><a href="../reference/I.html">I</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="rspsp_files/figure-html/plot-I-1.png" class="r-plt" alt="" width="700">
+To inspect the spectral density estimate use <code><a href="../reference/I_smooth.html">I_smooth()</a></code> we
+also offer a <code>plot</code> generic for the returned object:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">I_x_smooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/I_smooth.html">I_smooth</a></span><span class="op">(</span><span class="fu"><a href="../reference/I.html">I</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">I_x_smooth</span><span class="op">)</span></span></code></pre></div>
+<p><img src="rspsp_files/figure-html/plot-I-smooth-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+<div class="section level2">
+<h2 id="testing-for-equal-spectra">Testing for Equal Spectra<a class="anchor" aria-label="anchor" href="#testing-for-equal-spectra"></a>
+</h2>
+<p>Test for equal spectra by either using by one of
+<code><a href="../reference/test.periodo.html">test.periodo()</a></code> or <code><a href="../reference/test.spectral.html">test.spectral()</a></code>.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gridMA.html">gridMA</a></span><span class="op">(</span><span class="fl">75</span>, <span class="fl">75</span>, <span class="va">K0</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># apply periodogram based test Scaccia and Marin (2005)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/test.periodo.html">test.periodo</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="fl">.05</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Periodogram Test for equality Hypothesis. </span></span>
+<span><span class="co">#&gt; =========================================</span></span>
+<span><span class="co">#&gt; alpha: 0.05 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Results </span></span>
+<span><span class="co">#&gt; -----------------------------------------</span></span>
+<span><span class="co">#&gt; Tn: -1.444126 </span></span>
+<span><span class="co">#&gt; p: 0.9256483 </span></span>
+<span><span class="co">#&gt; Decision: Accepted H0</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># apply randomized test after Jentsch and Pauly (2015)</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/test.spectral.html">test.spectral</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="fl">300</span>, <span class="fl">.05</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Resampling Test for equality Hypothesis. </span></span>
+<span><span class="co">#&gt; =========================================</span></span>
+<span><span class="co">#&gt; Resampling iterations: 300 </span></span>
+<span><span class="co">#&gt; alpha: 0.05 </span></span>
+<span><span class="co">#&gt; used kernel-bandwith: </span></span>
+<span><span class="co">#&gt;  h1: 0.05624503 h2: 0.05624503</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Results </span></span>
+<span><span class="co">#&gt; -----------------------------------------</span></span>
+<span><span class="co">#&gt; Tn: 27.18329 </span></span>
+<span><span class="co">#&gt; p: 0.7666667 </span></span>
+<span><span class="co">#&gt; Decision: Accepted H0</span></span></code></pre></div>
+<p>You can also visualize the distribution of the randomized samples
+against the <span class="math inline">L_2</span> type test <span class="math inline">T_n</span> (see <code>test_spectral()</code> for
+more detail):</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
+<p><img src="rspsp_files/figure-html/plot-res-equality-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+<div class="section level2">
+<h2 id="testing-for-isotropy">Testing for Isotropy<a class="anchor" aria-label="anchor" href="#testing-for-isotropy"></a>
+</h2>
+<p><code><a href="../reference/test.spectral.html">test.spectral()</a></code> is applicable to other hypothesis for
+modelling assumptions. If you want to test for weak isotropy simply set
+<code>hypothesis="isotropy"</code></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># make sure to pass NULL for y</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/test.spectral.html">test.spectral</a></span><span class="op">(</span><span class="va">x</span>, <span class="cn">NULL</span>, <span class="fl">300</span>, <span class="fl">.05</span>, hypothesis<span class="op">=</span><span class="st">"isotropy"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Resampling Test for isotropy Hypothesis. </span></span>
+<span><span class="co">#&gt; =========================================</span></span>
+<span><span class="co">#&gt; Resampling iterations: 300 </span></span>
+<span><span class="co">#&gt; alpha: 0.05 </span></span>
+<span><span class="co">#&gt; used kernel-bandwith: </span></span>
+<span><span class="co">#&gt;  h1: 0.05624503 h2: 0.05624503</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Results </span></span>
+<span><span class="co">#&gt; -----------------------------------------</span></span>
+<span><span class="co">#&gt; Tn: 18.77008 </span></span>
+<span><span class="co">#&gt; p: 0.9266667 </span></span>
+<span><span class="co">#&gt; Decision: Accepted H0</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
+<p><img src="rspsp_files/figure-html/plot-isotropy-1.png" class="r-plt" alt="" width="700">
+If we would now consider a non-isotropic process:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gridMA.html">gridMA</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">50</span>, <span class="fu"><a href="../reference/MA_coef_row.html">MA_coef_row</a></span><span class="op">(</span><span class="fl">.7</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="fu"><a href="../reference/I.html">I</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="rspsp_files/figure-html/plot-I-alt-1.png" class="r-plt" alt="" width="700">
+…the test will reject:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/test.spectral.html">test.spectral</a></span><span class="op">(</span><span class="va">x</span>, <span class="cn">NULL</span>, <span class="fl">300</span>, <span class="fl">.05</span>, hypothesis<span class="op">=</span><span class="st">"isotropy"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in test.spectral(x, NULL, 300, 0.05, hypothesis = "isotropy"): Kernel</span></span>
+<span><span class="co">#&gt; smoothed just one summand. Critical values broke, because Tn is invariant</span></span>
+<span><span class="co">#&gt; against permutation.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Resampling Test for isotropy Hypothesis. </span></span>
+<span><span class="co">#&gt; =========================================</span></span>
+<span><span class="co">#&gt; Resampling iterations: 300 </span></span>
+<span><span class="co">#&gt; alpha: 0.05 </span></span>
+<span><span class="co">#&gt; used kernel-bandwith: </span></span>
+<span><span class="co">#&gt;  h1: 0.07369985 h2: 0.07369985</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Results </span></span>
+<span><span class="co">#&gt; -----------------------------------------</span></span>
+<span><span class="co">#&gt; Tn: 15.71547 </span></span>
+<span><span class="co">#&gt; p: 0 </span></span>
+<span><span class="co">#&gt; Decision: Rejected H0</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
+<p><img src="rspsp_files/figure-html/plot-res-iso-alt-1.png" class="r-plt" alt="" width="700"></p>
+<p>you can also test for weak stationarity using
+<code>hypothesis=stationary</code></p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">.2</span><span class="op">)</span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/test.spectral.html">test.spectral</a></span><span class="op">(</span><span class="va">x</span>, <span class="cn">NULL</span>, <span class="fl">300</span>, <span class="fl">.05</span>, hypothesis<span class="op">=</span><span class="st">"stationary"</span>, h1<span class="op">=</span><span class="va">h</span>, h2<span class="op">=</span><span class="va">h</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Resampling Test for stationary Hypothesis. </span></span>
+<span><span class="co">#&gt; =========================================</span></span>
+<span><span class="co">#&gt; Resampling iterations: 300 </span></span>
+<span><span class="co">#&gt; alpha: 0.05 </span></span>
+<span><span class="co">#&gt; used kernel-bandwith: </span></span>
+<span><span class="co">#&gt;  h1: 0.2091279 h2: 0.2091279</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Results </span></span>
+<span><span class="co">#&gt; -----------------------------------------</span></span>
+<span><span class="co">#&gt; Tn: 1.491642 </span></span>
+<span><span class="co">#&gt; p: 0.8066667 </span></span>
+<span><span class="co">#&gt; Decision: Accepted H0</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
+<p><img src="rspsp_files/figure-html/plot-res-ws-1.png" class="r-plt" alt="" width="700"></p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 

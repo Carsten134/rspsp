@@ -2,4 +2,5 @@
 
 ### All vignettes
 
-- [rspsp](https://carsten134.github.io/rspsp/articles/rspsp.md):
+- [\`rspsp\`: Spatial Spectral Analysis in
+  R](https://carsten134.github.io/rspsp/articles/rspsp.md):

@@ -54,34 +54,42 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><div class="section level2">
-<h2 id="rspsp-spatio-spectral-analysis-in-r">
-<code>rspsp</code>: Spatio spectral analysis in R<a class="anchor" aria-label="anchor" href="#rspsp-spatio-spectral-analysis-in-r"></a>
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header"><h1 id="rspsp-spatio-spectral-analysis-in-r">
+<code>rspsp</code>: Spatio Spectral Analysis in R<a class="anchor" aria-label="anchor" href="#rspsp-spatio-spectral-analysis-in-r"></a>
+</h1></div>
+<p>Lattice data (meaning measurements taken on a raster) are abundantly available in environmental sciences, geology, astrophysics, and surface imagery. We developed this package to offer tools to inspect the spectral properties of such data.</p>
+<p>Inspecting the spectral properties of lattice data can help get supporting evidence for modeling assumptions and get early results for research questions, such as “has the covariance structure between two samples significantly changed?”.</p>
+<div class="section level2">
+<h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
 </h2>
-<p>This package provides tools for testing the equality of spectral densities on a 2D grid.</p>
-<p>It is based on a resampling technique by Prof. Dr. Jentsch and Prof. Dr. Markus Pauly <a href="http://doi.org/10.3150/13-BEJ584" class="external-link">DOI</a>.</p>
-<div class="section level3">
-<h3 id="installing-from-github">Installing from GitHub<a class="anchor" aria-label="anchor" href="#installing-from-github"></a>
-</h3>
-<p>This package is not listed on CRAN. You will have to install it from github</p>
+<p>For now we offer tools for: - Sampling data - Inspecting the spectra - Hypothesis testing on the spectra</p>
+</div>
+</div>
+<div class="section level1">
+<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h1>
+<p>We’ve submitted to CRAN but are not listed as of yet. In the mean time you will have to install it from GitHub</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"https://github.com/Carsten134/rspsp"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
-</h3>
-<p>You can simulate a spatial MA process under <span class="math inline">H_1</span> and the method will detect, that the spatial dependencies are different.</p>
-<p>Just like the Jentsch, Pauly 2015 the test statistic is named <span class="math inline">\varphi_n^*</span></p>
+<div class="section level1">
+<h1 id="usage-example">Usage Example<a class="anchor" aria-label="anchor" href="#usage-example"></a>
+</h1>
+<p>Say you want to inspect whether the covariane structure between two lattice data samples differ. For this you can use our <code>test.spectral</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># simulate 20 x 20 MA grid under H1</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gridMA.html">gridMA</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fu"><a href="reference/MA_coef_col.html">MA_coef_col</a></span><span class="op">(</span><span class="fl">.7</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gridMA.html">gridMA</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fu"><a href="reference/MA_coef_row.html">MA_coef_row</a></span><span class="op">(</span><span class="fl">.7</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">K0</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/MA_coef_col.html">MA_coef_col</a></span><span class="op">(</span><span class="fl">.7</span><span class="op">)</span></span>
+<span><span class="va">K1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/MA_coef_row.html">MA_coef_row</a></span><span class="op">(</span><span class="fl">.7</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gridMA.html">gridMA</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="va">K0</span><span class="op">)</span></span>
+<span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/gridMA.html">gridMA</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="va">K1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># apply test statistic</span></span>
-<span><span class="fu">phi_n_star</span><span class="op">(</span><span class="va">x</span>,<span class="va">y</span>, <span class="fl">100</span>, <span class="fl">.05</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/test.spectral.html">test.spectral</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="fl">100</span>, <span class="fl">.05</span><span class="op">)</span></span></code></pre></div>
+<p>please see the <a href="https://carsten134.github.io/rspsp/articles/rspsp.html">Getting Started Guide</a> for more detail.</p>
 </div>
-</div>
+
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
