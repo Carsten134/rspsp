@@ -1,4 +1,8 @@
 # `rspsp`: Spatio Spectral Analysis in R
+
+[![R-CMD-check](https://github.com/Carsten134/rspsp/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Carsten134/rspsp/actions/workflows/R-CMD-check.yaml)
+[![Tests](https://github.com/Carsten134/rspsp/actions/workflows/tests.yaml/badge.svg)](https://github.com/Carsten134/rspsp/actions/workflows/tests.yaml)
+
 Lattice data (meaning measurements taken on a raster) are abundantly available in environmental sciences, geology, astrophysics, and surface imagery. We developed this package to offer tools to inspect the spectral properties of such data. 
 
 Inspecting the spectral properties of lattice data can help get supporting evidence for modeling assumptions and get early results for research questions, such as "has the covariance structure between two samples significantly changed?". 
