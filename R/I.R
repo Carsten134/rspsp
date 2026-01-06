@@ -5,12 +5,14 @@
 #' @param x matrix with data from stationary spatial process
 #'
 #' @returns martix with results
+#'
+#' @export
 I <- function(x){
   N <- nrow(x)
   M <- ncol(x)
 
   # apply scaling ((2*pi)^2 is already in the fft)
-  res <- (N * M)*abs(stats::fft(x))^2
+  res <- abs(stats::fft(x))^2/(N * M)
 
   # fft shift such that 0 is at the center and nyquist is at the borders
   return(res[

@@ -103,6 +103,6 @@ plot.I_smooth <- function(x, ...) {
                   zlab = "",
                   xlab = "",
                   ylab = "",
-                  main = "plot of smoothed Periodogram")
+                  main = "Plot of Smoothed Periodogram")
 }
 
