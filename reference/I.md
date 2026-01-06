@@ -23,3 +23,12 @@ I(x)
 ## Value
 
 martix with results
+
+## Examples
+
+``` r
+x <- gridMA(25, 25, MA_coef_all(.7))
+image(I(x))
+
+
+```

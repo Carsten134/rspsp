@@ -63,7 +63,6 @@ y <- gridMA(25, 25, K0)
 
 # applying the test with 300 iterations and significance 5%
 test.spectral(x, y, 300, .05)
-#> Warning: Kernel smoothed just one summand. Critical values broke, because Tn is invariant against permutation.
 #> Test Result for equality type 
 #>  ----------- 
 #> Tn: 2.577986 

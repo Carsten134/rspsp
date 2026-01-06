@@ -190,9 +190,6 @@ If we would now consider a non-isotropic process:</p>
 …the test will reject:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/test.spectral.html">test.spectral</a></span><span class="op">(</span><span class="va">x</span>, <span class="cn">NULL</span>, <span class="fl">300</span>, <span class="fl">.05</span>, hypothesis<span class="op">=</span><span class="st">"isotropy"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning in test.spectral(x, NULL, 300, 0.05, hypothesis = "isotropy"): Kernel</span></span>
-<span><span class="co">#&gt; smoothed just one summand. Critical values broke, because Tn is invariant</span></span>
-<span><span class="co">#&gt; against permutation.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Resampling Test for isotropy Hypothesis. </span></span>
 <span><span class="co">#&gt; =========================================</span></span>

@@ -147,9 +147,6 @@ image(I(x))
 
 ``` r
 res <- test.spectral(x, NULL, 300, .05, hypothesis="isotropy")
-#> Warning in test.spectral(x, NULL, 300, 0.05, hypothesis = "isotropy"): Kernel
-#> smoothed just one summand. Critical values broke, because Tn is invariant
-#> against permutation.
 summary(res)
 #> Resampling Test for isotropy Hypothesis. 
 #> =========================================
