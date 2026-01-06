@@ -4,3 +4,6 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+.RData
+.Rhistory
+.github/*

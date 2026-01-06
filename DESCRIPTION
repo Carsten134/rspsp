@@ -1,13 +1,17 @@
 Package: rspsp
 Type: Package
-Title: Spatial Spectral analysis with randomization
+Title: Spatial Spectral Analysis in R
 Version: 0.1.0
-Author: Carsten Stahl
+Author: Carsten Stahl [aut, cre]
 Maintainer: Carsten Stahl <carstenstahl122@gmail.com>
-Description: Introduces a new teststatistic for spatial and timeseries data, which tests for properties of spatial or temporal dependencies.
+Description: A comprehensive toolkit for spectral analysis of spatial lattice data, offering methods to estimate and test spectral properties of random fields on 2D grids. The package includes functions for generating synthetic data (Spatial MA/AR processes), computing periodograms and smoothed spectral density estimates, and performing hypothesis tests for comparing covariance structures, spectral equality, weak stationarity, and isotropy. Implements randomization-based testing procedures (Jentsch & Pauly, 2015 <doi:10.3150/13-BEJ584>) and periodogram-based tests (Scaccia & Martin, 2005 <doi:10.1016/j.jspi.2004.01.003>) suited for environmental science, geology, and other fields relying on raster data.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Authors@R: person(given = "Carsten",
+                    family = "Stahl",
+                    role = c("aut", "cre"),
+                    email = "carstenstahl122@gmail.com")
 Suggests: 
     knitr,
     rmarkdown,
