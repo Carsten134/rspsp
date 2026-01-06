@@ -250,7 +250,8 @@ phi_n_stnry <- function(x, B, alpha, h1=.13, h2=.13) {
   X[,,4] <- x[(N - N_tilde + 1):N, (M - M_tilde + 1):M]
 
   # test for equality of spectral densities in each partition
-  phi_n_star_mv(X, B, alpha, h1, h2)
+  res <- phi_n_star_mv(X, B, alpha, h1, h2)
+  res$hypothesis = "stationary"
 }
 
 
