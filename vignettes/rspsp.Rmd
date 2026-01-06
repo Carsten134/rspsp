@@ -44,12 +44,12 @@ image(x)
 
 # Inspecting the Periodogram and Spectral Density
 Before testing your sample you can inspect the spectral properties with the `I()` function:
-```{r}
+```{r plot-I}
 image(I(x))
 ```
 To inspect the spectral density estimate use `I_smooth()` we also offer a `plot` generic for the returned object:
 
-```{r}
+```{r plot-I-smooth}
 I_x_smooth <- I_smooth(I(x))
 
 plot(I_x_smooth)
@@ -58,13 +58,13 @@ plot(I_x_smooth)
 # Testing for Equal Spectra
 Test for equal spectra by either using by one of `test.periodo()` or `test.spectral()`.
 
-```{r}
+```{r apply-periodo-equal}
 y <- gridMA(75, 75, K0)
 
 # apply periodogram based test Scaccia and Marin (2005)
 summary(test.periodo(x, y, .05))
 ```
-```{r}
+```{r apply-test.spectral-equal}
 # apply randomized test after Jentsch and Pauly (2015)
 res <- test.spectral(x, y, 300, .05)
 summary(res)
@@ -72,7 +72,7 @@ summary(res)
 
 
 You can also visualize the distribution of the randomized samples \eqn{T_n^*} against the $L_2$ type test $T_n$ (see `test_spectral()` for more detail):
-```{r}
+```{r plot-res-equality}
 plot(res)
 ```
 
@@ -80,7 +80,7 @@ plot(res)
 
 `test.spectral()` is applicable to other hypothesis for modelling assumptions. If you want to test for weak isotropy simply set `hypothesis="isotropy"`
 
-```{r}
+```{r plot-isotropy}
 # make sure to pass NULL for y
 res <- test.spectral(x, NULL, 300, .05, hypothesis="isotropy")
 
@@ -89,12 +89,12 @@ plot(res)
 ```
 If we would now consider a non-isotropic process:
 
-```{r}
+```{r plot-I-alt}
 x <- gridMA(50, 50, MA_coef_row(.7))
 image(I(x))
 ```
 ...the test will reject:
-```{r}
+```{r plot-res-iso-alt}
 res <- test.spectral(x, NULL, 300, .05, hypothesis="isotropy")
 summary(res)
 
@@ -104,8 +104,9 @@ plot(res)
 
 you can also test for weak stationarity using `hypothesis=stationary`
 
-```{r}
-res <- test.spectral(x, NULL, 300, .05, hypothesis="stationary")
+```{r plot-res-ws}
+h <- length(x)^(-.2)
+res <- test.spectral(x, NULL, 300, .05, hypothesis="stationary", h1=h, h2=h)
 
 summary(res)
 plot(res)
